@@ -1525,7 +1525,7 @@ async function loadNotices() {
 }
 async function loadPassoutStudents() {
   const res = await api("listPassoutStudents", {});
-  state.passoutStudents = res.ok ? (res.passoutStudents || []) : [];
+  state.passoutStudents = res.ok ? (res.students || []) : [];
 }
 
 /* =========================================================================
