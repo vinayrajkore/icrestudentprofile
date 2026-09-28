@@ -70,6 +70,6 @@ console.log("[build] config.js generated successfully.");
 console.log(`[build]   API_URL:       ${config.API_URL.slice(0, 48)}...`);
 console.log(`[build]   Cloud name:    ${config.CLOUDINARY_CLOUD_NAME}`);
 console.log(`[build]   Preset:        ${config.CLOUDINARY_UPLOAD_PRESET}`);
-console.log(`[build]   Token:         ${"*".repeat(config.PORTAL_TOKEN.length)}`);
 console.log("[build] Done. Deploy output directory: . (project root)");
+
 
