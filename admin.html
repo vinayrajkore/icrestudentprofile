@@ -1,0 +1,1850 @@
+<!doctype html>
+<!-- Built by Vinayraj Kore -->
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="author" content="Vinayraj Kore" />
+<meta name="description" content="Administrator panel for the Department of Computer Engineering, Institute of Civil and Rural Engineering, Gargoti. View the student roster, manage administrator accounts and bulk-import students." />
+<meta name="theme-color" content="#0B1220" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Admin Panel · Computer Engineering · ICRE Gargoti</title>
+<link rel="icon" type="image/png" href="favicon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:        #0B1220;
+  --primary:    #1E293B;
+  --primary-2:  #334155;
+  --primary-dark:#0B1220;
+  --accent:     #C2760C;
+  --accent-light:#F7E6C9;
+  --bg:         #F1F2F5;
+  --bg-soft:    #E7E9EE;
+  --card:       #FFFFFF;
+  --line:       #DBDFE6;
+  --line-soft:  #E7E9EE;
+  --success:    #157F3C;
+  --success-bg: #E6F5EA;
+  --danger:     #B3261E;
+  --danger-bg:  #FBEAE8;
+  --muted:      #5B6474;
+  --font-display: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', Consolas, monospace;
+  --radius: 8px; --radius-sm: 6px;
+  --shadow-sm: 0 1px 2px rgba(11,18,32,.06);
+  --shadow-md: 0 10px 24px rgba(11,18,32,.14);
+  --sidebar-w: 236px;
+}
+*{box-sizing:border-box;}
+html,body{height:100%;margin:0;}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:14px;-webkit-font-smoothing:antialiased;}
+button{font-family:inherit;}
+a{color:inherit;}
+:focus-visible{outline:2.5px solid var(--accent);outline-offset:2px;}
+::selection{background:var(--accent-light);color:var(--primary-dark);}
+.gear-line{height:3px;width:100%;background:var(--accent);opacity:.9;}
+.gear-line.thin{height:2px;}
+.seal{position:relative;display:inline-flex;align-items:center;justify-content:center;border-radius:7px;background:var(--primary-dark);box-shadow:var(--shadow-sm);flex:none;}
+.seal img{display:block;object-fit:contain;}
+.seal .fallback{font-family:var(--font-display);font-weight:700;color:var(--accent-light);}
+
+/* ---------- site header (logo, college name, student portal button) ---------- */
+.auth-page{min-height:100vh;display:flex;flex-direction:column;}
+.site-header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 28px;background:var(--primary-dark);border-bottom:1px solid rgba(255,255,255,.08);box-shadow:0 2px 10px rgba(11,18,32,.18);position:relative;z-index:2;flex-wrap:wrap;}
+.site-header-brand{display:flex;align-items:center;gap:12px;min-width:0;}
+.site-header-brand .seal{width:52px;height:52px;flex:none;background:rgba(255,255,255,.08);}
+.site-header-brand .name{font-family:var(--font-display);font-weight:700;font-size:14px;line-height:1.3;color:#fff;}
+.site-header-brand .name span{display:block;font-family:var(--font-mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--accent);font-weight:500;margin-top:3px;}
+.corner-link{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:6px;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.14);color:#fff;font-size:12.5px;font-weight:600;text-decoration:none;letter-spacing:.01em;cursor:pointer;transition:background .15s ease;flex:none;}
+.corner-link:hover{background:rgba(255,255,255,.12);}
+@media (max-width:480px){
+  .site-header{padding:11px 16px;}
+  .site-header-brand .name{font-size:12.5px;}
+  .site-header-brand .name span{font-size:9px;}
+  .corner-link{padding:8px 12px;font-size:11.5px;}
+}
+
+/* ---------- login shell ---------- */
+.login-shell{flex:1;display:grid;grid-template-columns:1.05fr 1fr;position:relative;}
+@media (max-width:880px){.login-shell{grid-template-columns:1fr;}.login-left{display:none;}}
+.login-left{position:relative;background:linear-gradient(165deg,#0B1220 0%,#141B2E 55%,#1E293B 130%);color:#E7EAF1;padding:56px 56px 40px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;}
+.login-left::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px, transparent 1px);background-size:28px 28px;opacity:.6;}
+.login-left::after{content:"";position:absolute;left:50%;top:52%;width:380px;height:380px;transform:translate(-50%,-50%);background:url('logo-watermark-hero.png') no-repeat center/contain;pointer-events:none;}
+.login-hero{position:relative;z-index:1;}
+.login-hero .eyebrow{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);}
+.login-hero h1{font-family:var(--font-display);font-weight:700;font-size:clamp(30px,4vw,40px);line-height:1.14;margin:14px 0 18px;letter-spacing:-.01em;}
+.login-hero p{font-size:14.5px;line-height:1.65;max-width:44ch;color:#AEB6C6;}
+.login-foot{position:relative;z-index:1;display:flex;gap:28px;font-family:var(--font-mono);font-size:11px;color:#828DA3;}
+.login-foot span b{color:#fff;display:block;font-family:var(--font-display);font-size:18px;font-weight:700;}
+.login-right{display:flex;align-items:center;justify-content:center;padding:40px 28px;background:var(--bg);overflow-y:auto;}
+.login-card{width:100%;max-width:400px;background:var(--card);border:1px solid var(--line-soft);border-radius:12px;padding:32px 30px 28px;box-shadow:var(--shadow-md);}
+@media (max-width:520px){.login-card{padding:26px 20px 22px;border-radius:10px;}}
+.login-card h2{font-family:var(--font-display);font-size:21px;font-weight:700;margin:0 0 6px;}
+.login-card .sub{color:var(--muted);font-size:13.5px;margin-bottom:22px;}
+.field{margin-bottom:15px;}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--ink);margin-bottom:6px;}
+.field .req{color:var(--danger);}
+.field input,.field select{width:100%;padding:9px 12px;border:1.5px solid var(--line);border-radius:var(--radius-sm);font-size:14px;background:#FBFBFC;color:var(--ink);outline:none;transition:border-color .12s ease,box-shadow .12s ease;}
+.field input:disabled{background:var(--bg-soft);color:var(--muted);}
+.field input:focus,.field select:focus{border-color:var(--primary-2);box-shadow:0 0 0 3px rgba(51,65,85,.14);}
+.field .hint-sm{display:block;font-size:11px;color:var(--muted);margin-top:5px;}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media (max-width:520px){.field-row{grid-template-columns:1fr;}}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:9px 16px;border-radius:var(--radius-sm);border:none;cursor:pointer;font-size:13.5px;font-weight:600;font-family:var(--font-body);transition:filter .12s ease,background .12s ease,box-shadow .12s ease;}
+.btn-primary{background:var(--primary);color:#fff;width:100%;padding:11px;}
+.btn-primary:hover:not(:disabled){filter:brightness(1.15);}
+.btn-primary:disabled{opacity:.55;cursor:default;}
+.btn-gold{background:var(--accent);color:#fff;}
+.btn-gold:hover:not(:disabled){filter:brightness(1.06);}
+.btn-ghost{background:transparent;border:1.5px solid var(--line);color:var(--ink);}
+.btn-ghost:hover:not(:disabled){background:var(--bg-soft);}
+.btn-danger{background:transparent;border:1.5px solid var(--danger);color:var(--danger);}
+.btn-danger:hover:not(:disabled){background:var(--danger-bg);}
+.btn-block{width:100%;}
+.btn:disabled{opacity:.55;cursor:default;}
+.link-btn{background:none;border:none;padding:0;color:var(--primary-2);font-weight:600;font-size:inherit;cursor:pointer;text-decoration:underline;font-family:inherit;}
+.login-note{margin-top:18px;font-size:12px;color:var(--muted);text-align:center;}
+.login-error,.form-error{background:var(--danger-bg);color:var(--danger);border-radius:var(--radius-sm);padding:10px 14px;font-size:13px;margin-bottom:16px;font-weight:600;}
+.form-ok{background:var(--success-bg);color:var(--success);border-radius:var(--radius-sm);padding:10px 14px;font-size:13px;margin-bottom:16px;font-weight:600;}
+
+/* ---------- app shell ---------- */
+.shell{display:flex;min-height:100vh;}
+.sidebar{width:var(--sidebar-w);flex:none;background:var(--primary-dark);color:#B7BECC;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;border-right:1px solid #1B2436;}
+.sidebar-crest{display:flex;align-items:center;gap:12px;padding:19px 18px 16px;}
+.sidebar-crest .seal{width:50px;height:50px;}
+.sidebar-crest .seal img{width:40px;height:40px;}
+.sidebar-crest .name{font-family:var(--font-display);font-size:12px;line-height:1.25;font-weight:700;color:#fff;}
+.sidebar-crest .dept{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.06em;color:var(--accent);text-transform:uppercase;margin-top:3px;}
+.sidebar nav{padding:8px 10px;display:flex;flex-direction:column;gap:1px;flex:1;overflow-y:auto;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:8px 11px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;color:#9AA3B5;text-decoration:none;cursor:pointer;border:none;background:transparent;width:100%;text-align:left;transition:background .12s ease;}
+.nav-item:hover{background:rgba(255,255,255,.05);}
+.nav-item.active{background:rgba(194,118,12,.14);color:#fff;box-shadow:inset 3px 0 0 var(--accent);}
+.sidebar-foot{padding:14px 18px 18px;border-top:1px solid rgba(255,255,255,.06);}
+.user-chip{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.avatar{width:32px;height:32px;border-radius:6px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12.5px;color:#241703;flex:none;overflow:hidden;}
+.avatar img{width:100%;height:100%;object-fit:cover;}
+.user-chip .who b{display:block;font-size:12.5px;color:#fff;}
+.user-chip .who span{display:block;font-size:10.5px;color:#71798A;font-family:var(--font-mono);text-transform:capitalize;}
+.main{flex:1;min-width:0;display:flex;flex-direction:column;position:relative;}
+.main::before{content:"";position:fixed;left:calc(50% + var(--sidebar-w)/2);top:50%;width:340px;height:340px;transform:translate(-50%,-50%);background:url('logo-watermark-soft.png') no-repeat center/contain;pointer-events:none;z-index:0;}
+.main>*{position:relative;z-index:1;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:15px 28px;background:var(--card);border-bottom:1px solid var(--line);box-shadow:0 1px 3px rgba(11,18,32,.05);position:relative;z-index:2;flex-wrap:wrap;gap:10px;}
+.topbar-left{display:flex;align-items:center;gap:14px;min-width:0;}
+.topbar h1{font-family:var(--font-display);font-size:18.5px;margin:0;font-weight:700;}
+.topbar .crumb{font-family:var(--font-mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:2px;}
+.content{padding:22px 28px 44px;flex:1 0 auto;}
+
+/* ---------- mobile nav (hamburger + off-canvas sidebar) ---------- */
+.menu-btn{display:none;align-items:center;justify-content:center;width:42px;height:42px;min-width:42px;border-radius:8px;border:1.5px solid var(--line);background:var(--card);cursor:pointer;flex:none;padding:0;}
+.menu-btn span{position:relative;display:block;width:18px;height:2px;background:var(--ink);}
+.menu-btn span::before,.menu-btn span::after{content:"";position:absolute;left:0;width:18px;height:2px;background:var(--ink);}
+.menu-btn span::before{top:-6px;}
+.menu-btn span::after{top:6px;}
+.sidebar-backdrop{display:none;}
+@media (max-width:860px){
+  .shell{display:block;}
+  .menu-btn{display:inline-flex;}
+  .sidebar{position:fixed;top:0;left:0;height:100dvh;z-index:80;transform:translateX(-100%);transition:transform .22s ease;box-shadow:var(--shadow-md);}
+  .sidebar.open{transform:translateX(0);}
+  .sidebar-backdrop{display:block;position:fixed;inset:0;background:rgba(10,15,35,.5);z-index:70;opacity:0;pointer-events:none;transition:opacity .2s ease;}
+  .sidebar-backdrop.show{opacity:1;pointer-events:auto;}
+  .main{width:100%;}
+  .main::before{left:50%;width:260px;height:260px;}
+}
+@media (max-width:640px){
+  .topbar{padding:12px 16px;}
+  .topbar h1{font-size:17px;}
+  .badge-dept{display:none;}
+  .content{padding:14px 16px 28px;}
+  .card-pad{padding:14px;}
+  .card-head{padding:12px 14px;flex-direction:column;align-items:stretch;}
+  .card-head > *{width:100%;}
+  .card-head h3{width:auto;}
+  .grid{gap:12px;}
+  .btn{min-height:44px;}
+  .nav-item{min-height:44px;}
+  .searchbar{min-width:0;width:100%;}
+  .select-sm{width:100%;}
+  .toast{left:16px;right:16px;bottom:16px;max-width:none;text-align:center;}
+  .modal{max-height:92vh;}
+  .site-footer{flex-direction:column;padding:16px 20px;text-align:center;gap:6px;}
+  .site-footer a{order:-1;}
+  .field input,.field select{padding:11px 12px;}
+}
+.grid{display:grid;gap:16px;}
+.grid-3{grid-template-columns:repeat(3,1fr);}
+.grid-2{grid-template-columns:repeat(2,1fr);}
+@media (max-width:900px){.grid-3,.grid-2{grid-template-columns:1fr;}}
+.card{background:var(--card);border:1px solid var(--line-soft);border-radius:var(--radius);box-shadow:var(--shadow-sm);}
+.card-pad{padding:18px 20px;}
+.card-head{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--line-soft);flex-wrap:wrap;gap:10px;}
+.card-head h3{margin:0;font-family:var(--font-display);font-size:14.5px;font-weight:700;}
+.stat{display:flex;flex-direction:column;gap:5px;}
+.stat .label{font-family:var(--font-mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);}
+.stat .num{font-family:var(--font-display);font-size:28px;font-weight:700;color:var(--primary);}
+.stat .delta{font-size:11.5px;color:var(--success);}
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{text-align:left;padding:9px 20px;font-family:var(--font-mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line-soft);background:var(--bg-soft);}
+td{padding:10px 20px;border-bottom:1px solid var(--line-soft);vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+/* On narrow screens, tables collapse into aligned label/value rows instead of
+   scrolling sideways (which was cutting columns off and looking misaligned). */
+@media (max-width:640px){
+  table.responsive-table thead{display:none;}
+  table.responsive-table,table.responsive-table tbody,table.responsive-table tr,table.responsive-table td{display:block;width:100%;}
+  table.responsive-table tr{padding:10px 14px;border-bottom:1px solid var(--line-soft);}
+  table.responsive-table tr:last-child{border-bottom:none;}
+  table.responsive-table td{border-bottom:none;padding:4px 0;display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:right;}
+  table.responsive-table td::before{content:attr(data-label);font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);text-align:left;flex:none;}
+  table.responsive-table td:empty::before{display:none;}
+  table.responsive-table td.rt-photo{justify-content:flex-start;}
+  table.responsive-table td.rt-photo::before{display:none;}
+}
+tr.clickable{cursor:pointer;}
+tr.clickable:hover{background:var(--bg-soft);}
+.pill{display:inline-flex;align-items:center;padding:3px 10px;border-radius:999px;font-size:10.5px;font-weight:600;}
+.pill-green{background:var(--success-bg);color:var(--success);}
+.pill-gold{background:var(--accent-light);color:#7A4B08;}
+.pill-gray{background:var(--bg-soft);color:var(--muted);}
+.pill-indigo{background:#E4E8F0;color:var(--primary-2);}
+.searchbar{display:flex;align-items:center;gap:8px;border:1.5px solid var(--line);border-radius:var(--radius-sm);padding:7px 11px;background:var(--bg-soft);min-width:220px;}
+.searchbar input{border:none;background:transparent;outline:none;font-size:13px;width:100%;padding:0;}
+.select-sm{border:1.5px solid var(--line);border-radius:var(--radius-sm);padding:7px 10px;background:var(--bg-soft);font-size:12.5px;color:var(--ink);}
+.badge-dept{font-family:var(--font-mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;background:var(--primary);color:#fff;padding:3px 9px;border-radius:5px;}
+.class-tag{font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:.04em;padding:2px 8px;border-radius:5px;}
+.class-FY{background:#E4E8F0;color:var(--primary-2);}
+.class-SY{background:var(--accent-light);color:#7A4B08;}
+.class-TY{background:var(--success-bg);color:var(--success);}
+.class-ALL{background:#F4E4FB;color:#7A2E9E;}
+.notice-card{border-bottom:1px solid var(--line-soft);padding:16px 0;}
+.notice-card:last-child{border-bottom:none;}
+.notice-card .n-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:6px;}
+.notice-card .n-title{font-weight:700;font-size:14.5px;}
+.notice-card .n-body{font-size:13.5px;color:var(--ink);white-space:pre-wrap;margin:6px 0 8px;}
+.notice-card .n-meta{font-family:var(--font-mono);font-size:10.5px;color:var(--muted);letter-spacing:.02em;}
+.kv{display:grid;grid-template-columns:1fr 1fr;gap:11px 20px;}
+@media (max-width:520px){.kv{grid-template-columns:1fr;}}
+.kv .item .k{font-family:var(--font-mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
+.kv .item .v{font-size:13.5px;}
+.modal-backdrop{position:fixed;inset:0;background:rgba(11,18,32,.55);display:flex;align-items:center;justify-content:center;z-index:60;padding:20px;}
+.modal{background:var(--card);border-radius:var(--radius);max-width:560px;width:100%;max-height:86vh;overflow-y:auto;box-shadow:var(--shadow-md);}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--line-soft);}
+.modal-head h3{margin:0;font-family:var(--font-display);font-size:15.5px;}
+.modal-close{background:none;border:none;font-size:19px;cursor:pointer;color:var(--muted);line-height:1;}
+.modal-body{padding:18px 20px;}
+.upload-zone{border:1.5px dashed var(--line);border-radius:var(--radius);padding:28px 20px;text-align:center;background:var(--bg);cursor:pointer;transition:border-color .12s ease,background .12s ease;display:flex;flex-direction:column;align-items:center;gap:2px;}
+.upload-zone:hover{border-color:var(--accent);background:var(--accent-light);}
+.upload-zone input[type=file]{display:none;}
+.upload-zone .upload-icon{width:38px;height:38px;border-radius:50%;background:var(--accent-light);color:var(--accent);display:flex;align-items:center;justify-content:center;margin-bottom:10px;flex:none;}
+.upload-zone .upload-icon svg{width:18px;height:18px;}
+.avatar-sm{width:30px;height:30px;border-radius:6px;background:var(--bg-soft);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--muted);overflow:hidden;flex:none;}
+.avatar-sm img{width:100%;height:100%;object-fit:cover;}
+
+/* ---------- profile field on/off toggles ---------- */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:11px 0;border-bottom:1px solid var(--line-soft);}
+.toggle-row:last-child{border-bottom:none;}
+.toggle-row .t-label{font-size:13.5px;font-weight:600;}
+.toggle-row .t-sub{font-size:11.5px;color:var(--muted);margin-top:2px;}
+.switch{position:relative;display:inline-block;width:40px;height:23px;flex:none;}
+.switch input{opacity:0;width:0;height:0;position:absolute;}
+.switch .slider{position:absolute;inset:0;background:var(--line);border-radius:999px;cursor:pointer;transition:background .15s ease;}
+.switch .slider::before{content:"";position:absolute;height:17px;width:17px;left:3px;top:3px;background:#fff;border-radius:50%;transition:transform .15s ease;box-shadow:0 1px 2px rgba(0,0,0,.25);}
+.switch input:checked + .slider{background:var(--success);}
+.switch input:checked + .slider::before{transform:translateX(17px);}
+.switch input:disabled + .slider{opacity:.5;cursor:default;}
+
+.empty-state{padding:28px 22px;text-align:center;color:var(--muted);font-size:13px;}
+.toast{position:fixed;bottom:22px;right:22px;background:var(--primary-dark);color:#fff;padding:11px 16px;border-radius:var(--radius-sm);font-size:13px;font-weight:600;box-shadow:var(--shadow-md);z-index:50;animation:toastIn .18s ease;}
+.toast.err{background:var(--danger);}
+@keyframes toastIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.spinner-line{font-family:var(--font-mono);font-size:12px;color:var(--muted);padding:12px 0;}
+.site-footer{flex:none;background:var(--primary-dark);border-top:1px solid rgba(255,255,255,.08);padding:14px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;font-size:11px;color:#9AA3B5;font-family:var(--font-mono);}
+.site-footer a{color:#fff;text-decoration:none;font-weight:600;}
+.site-footer a:hover{text-decoration:underline;}
+
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script>
+console.log("%cICRE Gargoti \u00b7 Computer Engineering Admin Panel", "font-weight:bold;font-size:13px;color:#1E293B;");
+console.log("%cBuilt by Vinayraj Kore", "font-size:12px;color:#C2760C;");
+
+/* =========================================================================
+   CONFIG — API_URL points at your backend. Currently set to the Apps
+   Script Web App URL (ends /exec). If you migrate to Supabase (see
+   supabase/MIGRATION.md), replace this with your deployed Edge Function
+   URL instead — everything else on this page stays the same, since both
+   backends speak the same { action, ...payload } -> { ok, ... } protocol.
+   Use the SAME URL as index.html so both files share one database.
+   ========================================================================= */
+const API_URL = "https://script.google.com/macros/s/REDACTED_SEE_CONFIG_JS/exec";
+const LOGO = "logo.png"; // place a file named exactly logo.png next to this HTML file
+const STUDENT_PORTAL_URL = "index.html";
+
+const DEPT_NAME = "Computer Engineering";
+const CLASS_LABELS = { FY: "First Year", SY: "Second Year", TY: "Third Year" };
+const CLASS_ORDER = ["FY", "SY", "TY"];
+
+// Student-editable profile fields the admin can turn on/off from the
+// "Profile Field Controls" screen. Keep the `key`s in sync with
+// EDITABLE_STUDENT_FIELDS in Code.gs and with FIELD_SECTIONS in
+// student-portal.html.
+const FIELD_DEFS = [
+  { key: "rollNumber", label: "Roll number", section: "Contact & personal details" },
+  { key: "phone", label: "Phone number", section: "Contact & personal details" },
+  { key: "dob", label: "Date of birth", section: "Contact & personal details" },
+  { key: "gender", label: "Gender", section: "Contact & personal details" },
+  { key: "bloodGroup", label: "Blood group", section: "Contact & personal details" },
+  { key: "sscMarks", label: "SSC / 10th marks (FY)", section: "Contact & personal details" },
+  { key: "semester", label: "Previous semester (SY/TY)", section: "Contact & personal details" },
+  { key: "semMarks", label: "Previous semester marks (SY/TY)", section: "Contact & personal details" },
+  { key: "addr1", label: "Address line 1", section: "Living Address" },
+  { key: "addr2", label: "Address line 2", section: "Living Address" },
+  { key: "city", label: "City / District", section: "Living Address" },
+  { key: "state", label: "State", section: "Living Address" },
+  { key: "pincode", label: "PIN code", section: "Living Address" },
+  { key: "gAddr1", label: "Address line 1", section: "Guardian Address" },
+  { key: "gAddr2", label: "Address line 2", section: "Guardian Address" },
+  { key: "gCity", label: "City / District", section: "Guardian Address" },
+  { key: "gState", label: "State", section: "Guardian Address" },
+  { key: "gPincode", label: "PIN code", section: "Guardian Address" },
+  { key: "guardianName", label: "Guardian name", section: "Parent / Guardian" },
+  { key: "guardianRelation", label: "Guardian relation", section: "Parent / Guardian" },
+  { key: "guardianPhone", label: "Guardian phone", section: "Parent / Guardian" },
+  { key: "guardianOccupation", label: "Guardian occupation", section: "Parent / Guardian" },
+  { key: "photo", label: "Upload photo ID", section: "Photo & ID" },
+];
+const FIELD_LABELS = FIELD_DEFS.reduce((m, f) => (m[f.key] = f.label, m), {});
+
+// Standard blood-group options offered in the student edit form.
+const BLOOD_GROUPS = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
+
+// Certificate uploads (admin adding a certificate on a student's behalf) go
+// straight from the browser to Cloudinary, same as student-portal.html —
+// keep these in sync with that file.
+const CLOUDINARY_CLOUD_NAME = "g6idhdc9";
+const CLOUDINARY_UPLOAD_PRESET = "i9q883xz";
+const CLOUDINARY_AUTO_UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/auto/upload`;
+
+// Prize / achievement status options offered on the certificate upload form.
+const CERTIFICATE_STATUSES = ["1st Prize", "2nd Prize", "3rd Prize", "Winner", "Runner-up", "Best Paper", "Participation", "Other"];
+
+/* =========================================================================
+   API — every read/write goes to the Google Sheet through Apps Script
+   ========================================================================= */
+async function api(action, payload) {
+  if (!API_URL || API_URL.indexOf("PASTE_YOUR") === 0) {
+    return { ok: false, error: "The panel isn't connected to a Google Sheet yet. Set API_URL at the top of this file to your deployed Apps Script Web App URL." };
+  }
+  try {
+    const res = await fetch(API_URL, {
+      method: "POST",
+      body: JSON.stringify(Object.assign({ action }, payload || {})),
+    });
+    return await res.json();
+  } catch (err) {
+    return { ok: false, error: "Could not reach the server. Check your connection and the API_URL setting." };
+  }
+}
+
+/* ---------- Cloudinary upload for certificates (browser → Cloudinary
+   directly, unsigned) — mirrors student-portal.html so admin-added
+   certificates land in the same place as student-added ones. ---------- */
+async function uploadCertificateFile(file) {
+  const form = new FormData();
+  form.append("file", file);
+  form.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+
+  const res = await fetch(CLOUDINARY_AUTO_UPLOAD_URL, { method: "POST", body: form });
+  if (!res.ok) throw new Error("Certificate upload failed. Please try again.");
+  const data = await res.json();
+  if (!data.secure_url) throw new Error("Certificate upload failed. Please try again.");
+  return data.secure_url;
+}
+
+/* ---------- tiny utils ---------- */
+function escapeHtml(str) {
+  return String(str ?? "").replace(/[&<>"']/g, (c) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+  }[c]));
+}
+function fmtDate(iso) {
+  if (!iso) return "";
+  try { return new Date(iso).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }); }
+  catch (e) { return iso; }
+}
+// Roll/enrollment numbers are usually numeric but stored as text, and
+// students without one yet should sort to the end rather than the top.
+function naturalCompare(a, b) {
+  const av = String(a ?? "").trim(), bv = String(b ?? "").trim();
+  if (!av && !bv) return 0;
+  if (!av) return 1;
+  if (!bv) return -1;
+  const an = Number(av), bn = Number(bv);
+  if (!isNaN(an) && !isNaN(bn)) return an - bn;
+  return av.localeCompare(bv, undefined, { numeric: true, sensitivity: "base" });
+}
+
+/* ---------- session lives only in memory for this tab — nothing is
+   persisted to localStorage, so every page load starts signed out. ---------- */
+
+/* ---------- student photos now travel with the student record (see s.photo) ---------- */
+
+
+/* =========================================================================
+   UI / render layer
+   ========================================================================= */
+const root = document.getElementById("root");
+
+const state = {
+  screen: "login",          // 'login' | 'portal'
+  loginError: "",
+  busy: false,
+  active: "overview",
+  toast: null,
+  sidebarOpen: false,
+  session: null,            // { id } — in-memory only, never persisted
+  currentUser: null,        // hydrated admin record (no password)
+  students: null,           // cached roster
+  adminList: null,          // cached list of admin accounts
+  fieldSettings: null,      // cached { fieldKey: true|false } profile field on/off map
+  passoutStudents: null,    // cached list of passout student submissions
+  passoutQuery: "",         // search filter for passout list
+  detailPassout: null,      // passout student currently shown in the detail modal
+  staffQuery: "",
+  rosterSort: "roll",       // "roll" | "enrollment" | "name" — how Student Records sorts each class list
+  rosterClass: null,        // null = class-selection screen; "FY"|"SY"|"TY" = that class's student list
+  showExport: false,        // true when the export-columns picker modal is open
+  exportCols: null,         // Set of column keys currently checked in the export picker (null = not yet initialized)
+  showAddAdmin: false,
+  adminUsersMsg: "",
+  importPreview: null,      // { rows, skipped }
+  detailStudent: null,      // student shown in the roster detail modal
+  editingStudent: false,    // true when the detail modal is in edit mode
+  editStudentMsg: "",       // validation/error message for the edit-student form
+  certificates: [],         // certificates for the student currently open in the detail modal
+  certificatesLoaded: false,
+  notices: null,            // cached list of all posted notices
+  noticeMsg: "",            // validation/error message for the post-notice form
+};
+
+/* ---------- certificates for whichever student is open in the detail modal ---------- */
+async function loadCertificates(studentId) {
+  const res = await api("listCertificates", { studentId });
+  state.certificates = res.ok ? res.certificates : [];
+  state.certificatesLoaded = true;
+}
+
+function toast(text, kind) {
+  state.toast = { text, kind: kind || "ok" };
+  render();
+  setTimeout(() => { state.toast = null; render(); }, 2600);
+}
+
+/* ---------- shared bits ---------- */
+function seal(size, imgSize) {
+  return `<span class="seal" style="width:${size}px;height:${size}px"><img src="${LOGO}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" style="width:${imgSize}px;height:${imgSize}px"/><span class="fallback" style="display:none;position:absolute;font-size:${Math.round(imgSize*0.42)}px">IC</span></span>`;
+}
+function topbar(crumb, title) {
+  return `<div class="topbar"><div class="topbar-left"><button type="button" class="menu-btn" data-act="toggle-sidebar" aria-label="Open menu"><span></span></button><div><div class="crumb">${escapeHtml(crumb)}</div><h1>${escapeHtml(title)}</h1></div></div><span class="badge-dept">Computer Engineering &middot; Gargoti</span></div>`;
+}
+function classTag(cls) {
+  return `<span class="class-tag class-${cls}">${cls} &middot; ${CLASS_LABELS[cls] || cls}</span>`;
+}
+function certificatePill(status) {
+  const isPrize = status && status !== "Participation" && status !== "Other";
+  return `<span class="pill ${isPrize ? "pill-gold" : "pill-gray"}">${escapeHtml(status || "—")}</span>`;
+}
+function siteFooter() {
+  return `<footer class="site-footer"><span>&copy; ${new Date().getFullYear()} Institute of Civil and Rural Engineering, Gargoti &middot; Dept. of Computer Engineering</span><a href="${STUDENT_PORTAL_URL}">&larr; Back to student portal</a></footer>`;
+}
+
+/* =========================================================================
+   LOGIN SCREEN — administrators only
+   ========================================================================= */
+function renderLogin() {
+  return `
+  <div class="auth-page">
+    <header class="site-header">
+      <div class="site-header-brand">${seal(52, 42)}<div class="name">Institute of Civil and Rural Engineering<span>Gargoti &middot; Computer Engineering</span></div></div>
+      <a class="corner-link" href="${STUDENT_PORTAL_URL}">Student portal &rarr;</a>
+    </header>
+    <div class="login-shell">
+      <div class="login-left">
+        <div class="login-hero">
+          <div class="eyebrow">Department of Computer Engineering</div>
+          <h1>Run the<br/>department office.</h1>
+          <p>Sign in with your administrator account to view the student roster, manage other admin accounts and import students in bulk.</p>
+        </div>
+        <div class="login-foot">
+          <span><b>1957</b>Founded</span>
+          <span><b>Computer</b>Engineering</span>
+          <span><b>Admin</b>Access Only</span>
+        </div>
+      </div>
+      <div class="login-right">
+        <div class="login-card">
+          <h2>Admin sign in</h2>
+          <p class="sub">Use your administrator email and password.</p>
+          ${state.loginError ? `<div class="login-error" role="alert">${escapeHtml(state.loginError)}</div>` : ""}
+          <form data-form="login">
+            <div class="field">
+              <label for="loginEmail">Email</label>
+              <input id="loginEmail" name="email" type="email" required autocomplete="username" placeholder="admin@example.com" />
+            </div>
+            <div class="field">
+              <label for="loginPassword">Password</label>
+              <input id="loginPassword" name="password" type="password" required autocomplete="current-password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" />
+            </div>
+            <button type="submit" class="btn btn-primary" ${state.busy ? "disabled" : ""}>${state.busy ? "Signing in&hellip;" : "Enter admin panel"}</button>
+          </form>
+          <p class="login-note">There is no admin self-registration. Ask an existing administrator to create your account from the Manage Admins screen.</p>
+        </div>
+      </div>
+    </div>
+    ${siteFooter()}
+  </div>`;
+}
+
+/* =========================================================================
+   PORTAL SHELL
+   ========================================================================= */
+const NAV_ITEMS = [["overview", "Dashboard"], ["roster", "Student Records"], ["notices", "Notices"], ["passout", "Passout Students"], ["fields", "Profile Field Controls"], ["users", "Administrator Access"], ["import", "Bulk Student Import"]];
+
+function sidebar() {
+  const user = state.currentUser;
+  if (!user) return "";
+  const items = NAV_ITEMS.map(([key, label]) =>
+    `<button class="nav-item${state.active === key ? " active" : ""}" data-act="nav" data-key="${key}">${label}</button>`
+  ).join("");
+  const initials = user.name.split(" ").map((s) => s[0]).slice(0, 2).join("").toUpperCase();
+
+  return `
+  <aside class="sidebar${state.sidebarOpen ? " open" : ""}">
+    <div class="sidebar-crest">
+      ${seal(50, 40)}
+      <div>
+        <div class="name">Institute of Civil &amp;<br/>Rural Engineering, Gargoti</div>
+        <div class="dept">Computer Engineering &middot; Admin panel</div>
+      </div>
+    </div>
+    <div class="gear-line thin"></div>
+    <nav>${items}</nav>
+    <div class="sidebar-foot">
+      <div class="user-chip">
+        <span class="avatar">${initials}</span>
+        <span class="who"><b>${escapeHtml(user.name)}</b><span>Administrator</span></span>
+      </div>
+      <button class="nav-item" style="color:#F0B3A8" data-act="logout">&larr; Sign out</button>
+    </div>
+  </aside>
+  <div class="sidebar-backdrop${state.sidebarOpen ? " show" : ""}" data-act="close-sidebar"></div>`;
+}
+
+/* =========================================================================
+   OVERVIEW
+   ========================================================================= */
+function classCountsFrom(students) {
+  const out = { FY: 0, SY: 0, TY: 0 };
+  (students || []).forEach((s) => { if (out[s.cls] !== undefined) out[s.cls]++; });
+  return out;
+}
+
+function adminOverview() {
+  const students = state.students || [];
+  const counts = classCountsFrom(students);
+  return topbar("Admin Panel", "Dashboard") + `
+    <div class="content">
+      <div class="grid grid-2" style="margin-bottom:16px">
+        <div class="card card-pad stat"><span class="label">Total Students</span><span class="num">${students.length}</span><span class="delta">${DEPT_NAME}</span></div>
+        <div class="card card-pad stat"><span class="label">Data source</span><span class="num" style="font-size:20px">Google Sheet</span><span class="delta" style="color:var(--muted)">live via Apps Script</span></div>
+      </div>
+      <div class="card-head" style="padding:0 0 10px;border:none"><h3 style="font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)">Students by class</h3></div>
+      <div class="grid grid-3" style="margin-bottom:24px">
+        <div class="card card-pad stat"><span class="label">${CLASS_LABELS.FY || "First Year"}</span><span class="num">${counts.FY}</span><span class="delta">${classTag("FY")}</span></div>
+        <div class="card card-pad stat"><span class="label">${CLASS_LABELS.SY || "Second Year"}</span><span class="num">${counts.SY}</span><span class="delta">${classTag("SY")}</span></div>
+        <div class="card card-pad stat"><span class="label">${CLASS_LABELS.TY || "Third Year"}</span><span class="num">${counts.TY}</span><span class="delta">${classTag("TY")}</span></div>
+      </div>
+      <div class="card"><div class="card-head"><h3>Quick actions</h3></div><div class="card-pad" style="display:flex;gap:14px;flex-wrap:wrap">
+        <button class="btn btn-ghost" data-act="nav" data-key="roster">View student records</button>
+        <button class="btn btn-ghost" data-act="nav" data-key="users">Manage administrator access</button>
+        <button class="btn btn-gold" data-act="nav" data-key="import">Bulk student import</button>
+      </div></div>
+    </div>`;
+}
+
+/* =========================================================================
+   ROSTER
+   ========================================================================= */
+const ROSTER_SORTS = {
+  roll: { label: "Roll number", cmp: (a, b) => naturalCompare(a.rollNumber, b.rollNumber) },
+  enrollment: { label: "Enrollment number", cmp: (a, b) => naturalCompare(a.enrollment, b.enrollment) },
+  name: { label: "Name", cmp: (a, b) => String(a.name || "").localeCompare(String(b.name || "")) },
+};
+
+// Columns offered in the "Export…" column picker. The academic column(s)
+// depend on the class being exported: FY gets SSC marks, SY/TY get the
+// previous-semester marks the student (or admin) recorded.
+function exportColumnsFor(clsKey) {
+  const cols = [
+    { key: "photo", label: "Photo", get: (s) => s.photo || "" },
+    { key: "rollNumber", label: "Roll No.", get: (s) => s.rollNumber || "" },
+    { key: "enrollment", label: "Enrollment", get: (s) => s.enrollment || "" },
+    { key: "name", label: "Name", get: (s) => s.name || "" },
+    { key: "email", label: "Email", get: (s) => s.email || "" },
+    { key: "phone", label: "Phone", get: (s) => s.phone || "" },
+    { key: "dob", label: "Date of birth", get: (s) => fmtDate(s.dob) || "" },
+    { key: "gender", label: "Gender", get: (s) => s.gender || "" },
+    { key: "bloodGroup", label: "Blood group", get: (s) => s.bloodGroup || "" },
+  ];
+  if (clsKey === "FY") {
+    cols.push({ key: "sscMarks", label: "SSC Marks (%)", get: (s) => s.sscMarks || "" });
+  } else {
+    cols.push({ key: "semester", label: "Semester", get: (s) => (s.semester ? `Semester ${s.semester}` : "") });
+    cols.push({ key: "semMarks", label: "Sem Marks (%)", get: (s) => s.semMarks || "" });
+  }
+  cols.push(
+    { key: "address", label: "Living address", get: (s) => [s.addr1, s.addr2, s.city, s.state, s.pincode].filter(Boolean).join(", ") },
+    { key: "guardianAddress", label: "Guardian address", get: (s) => [s.gAddr1, s.gAddr2, s.gCity, s.gState, s.gPincode].filter(Boolean).join(", ") },
+    { key: "guardianName", label: "Guardian name", get: (s) => s.guardianName || "" },
+    { key: "guardianRelation", label: "Guardian relation", get: (s) => s.guardianRelation || "" },
+    { key: "guardianPhone", label: "Guardian phone", get: (s) => s.guardianPhone || "" },
+    { key: "guardianOccupation", label: "Guardian occupation", get: (s) => s.guardianOccupation || "" },
+    { key: "createdAt", label: "Registered", get: (s) => fmtDate(s.createdAt) || "" },
+    { key: "source", label: "Source", get: (s) => (s.source === "import" ? "Bulk import" : "Self-registered") }
+  );
+  return cols;
+}
+
+// Sensible default selection the first time the picker opens for a class.
+function defaultExportCols(clsKey) {
+  const base = ["rollNumber", "enrollment", "name", "email", "phone"];
+  base.push(clsKey === "FY" ? "sscMarks" : "semester");
+  if (clsKey !== "FY") base.push("semMarks");
+  return new Set(base);
+}
+
+function exportModal(clsKey, list) {
+  const cols = exportColumnsFor(clsKey);
+  if (!state.exportCols) state.exportCols = defaultExportCols(clsKey);
+
+  const rows = cols.map((c) => `
+    <label style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line-soft);cursor:pointer">
+      <input type="checkbox" data-act="toggle-export-col" data-col="${c.key}" ${state.exportCols.has(c.key) ? "checked" : ""} />
+      <span style="font-size:13.5px">${escapeHtml(c.label)}</span>
+    </label>`).join("");
+
+  return `
+  <div class="modal-backdrop" data-act="close-export">
+    <div class="modal" style="max-width:480px">
+      <div class="modal-head"><h3>Export &middot; ${classTag(clsKey)}</h3><button class="modal-close" data-act="close-export" aria-label="Close">&times;</button></div>
+      <div class="modal-body">
+        <p style="margin:0 0 12px;color:var(--muted);font-size:13px">Choose which columns to include, then export. ${list.length} student${list.length === 1 ? "" : "s"} will be included, in the order currently shown on screen.</p>
+        <div style="display:flex;gap:10px;margin-bottom:6px">
+          <button type="button" class="btn btn-ghost" data-act="export-select-all">Select all</button>
+          <button type="button" class="btn btn-ghost" data-act="export-select-none">Clear all</button>
+        </div>
+        <div>${rows}</div>
+        <button type="button" class="btn btn-gold btn-block" style="margin-top:16px" data-act="confirm-export" ${state.exportCols.size ? "" : "disabled"}>Export to PDF</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+// Builds a print-only document with just the chosen columns and opens the
+// browser print dialog — the person picks "Save as PDF" as the destination.
+// (No external PDF library needed, and it works completely offline.)
+function doExportPdf(clsKey, list) {
+  const cols = exportColumnsFor(clsKey).filter((c) => state.exportCols.has(c.key));
+  if (!cols.length || !list.length) return;
+
+  const head = cols.map((c) => `<th>${escapeHtml(c.label)}</th>`).join("");
+  const body = list.map((s, i) => {
+    const cells = cols.map((c) => {
+      if (c.key === "photo") {
+        const url = s.photo || "";
+        return url
+          ? `<td class="photo-cell"><img src="${escapeHtml(url)}" alt="" /></td>`
+          : `<td class="photo-cell photo-cell-empty">&mdash;</td>`;
+      }
+      return `<td>${escapeHtml(String(c.get(s) || "\u2014"))}</td>`;
+    }).join("");
+    return `<tr><td>${i + 1}</td>${cells}</tr>`;
+  }).join("");
+  const today = new Date().toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
+
+  const doc = `<!doctype html><html><head><meta charset="UTF-8" />
+    <title>Student Records · ${escapeHtml(clsKey)}</title>
+    <style>
+      body{font-family:Arial,Helvetica,sans-serif;color:#0B1220;padding:24px;}
+      h1{font-size:18px;margin:0 0 2px;}
+      .sub{font-size:12px;color:#5B6474;margin:0 0 18px;}
+      table{width:100%;border-collapse:collapse;font-size:11px;}
+      th,td{border:1px solid #DBDFE6;padding:6px 8px;text-align:left;vertical-align:top;}
+      th{background:#F1F2F5;font-weight:700;}
+      tr:nth-child(even) td{background:#FAFAFB;}
+      .photo-cell{padding:4px 6px;text-align:center;width:46px;}
+      .photo-cell img{width:36px;height:44px;object-fit:cover;border-radius:2px;display:block;}
+      .photo-cell-empty{color:#9CA3AF;text-align:center;}
+      @page{size:A4 landscape;margin:14mm;}
+    </style></head>
+    <body>
+      <h1>Institute of Civil &amp; Rural Engineering, Gargoti &middot; ${DEPT_NAME}</h1>
+      <p class="sub">Student Records &middot; ${classTag(clsKey)} &middot; ${list.length} student${list.length === 1 ? "" : "s"} &middot; Exported ${today}</p>
+      <table><thead><tr><th>#</th>${head}</tr></thead><tbody>${body}</tbody></table>
+      <script>
+        window.onload = () => {
+          const imgs = Array.from(document.images);
+          const pending = imgs.filter((img) => !img.complete);
+          if (!pending.length) { window.print(); return; }
+          let left = pending.length;
+          const done = () => { left -= 1; if (left <= 0) window.print(); };
+          pending.forEach((img) => { img.addEventListener("load", done); img.addEventListener("error", done); });
+        };
+      <\/script>
+    </body></html>`;
+
+  const win = window.open("", "_blank");
+  if (!win) { toast("Please allow pop-ups for this site to export a PDF.", "err"); return; }
+  win.document.open(); win.document.write(doc); win.document.close();
+}
+
+function adminRoster() {
+  const students = state.students || [];
+
+  // Step 1: no class picked yet — show FY / SY / TY selection cards.
+  if (!state.rosterClass) {
+    const counts = classCountsFrom(students);
+    const classCard = (clsKey) => `
+      <button type="button" class="card card-pad stat" style="text-align:left;cursor:pointer;border:1.5px solid var(--line-soft);width:100%" data-act="select-roster-class" data-key="${clsKey}">
+        <span class="label">${CLASS_LABELS[clsKey] || clsKey}</span>
+        <span class="num">${counts[clsKey]}</span>
+        <span class="delta">${classTag(clsKey)} &middot; student${counts[clsKey] === 1 ? "" : "s"}</span>
+      </button>`;
+
+    return topbar("Admin Panel", "Student Records") + `
+      <div class="content">
+        <div class="card" style="margin-bottom:20px">
+          <div class="card-head">
+            <h3>Choose a class</h3>
+            <button class="btn btn-ghost" data-act="reload-students">Refresh</button>
+          </div>
+          <div class="card-pad" style="padding-top:2px">
+            <p style="margin:0;color:var(--muted);font-size:13.5px">Select a class to view and manage its student list.</p>
+          </div>
+        </div>
+        <div class="grid grid-3">
+          ${classCard("FY")}
+          ${classCard("SY")}
+          ${classCard("TY")}
+        </div>
+      </div>`;
+  }
+
+  // Step 2: a class is picked — show that class's roster only.
+  const clsKey = state.rosterClass;
+  const q = (state.staffQuery || "").trim().toLowerCase();
+  let list = students.filter((s) => s.cls === clsKey);
+  if (q) list = list.filter((s) => (s.name || "").toLowerCase().includes(q) || (s.enrollment || "").toLowerCase().includes(q) || (s.rollNumber || "").toLowerCase().includes(q) || (s.email || "").toLowerCase().includes(q));
+
+  const sortKey = ROSTER_SORTS[state.rosterSort] ? state.rosterSort : "roll";
+  const sortCmp = ROSTER_SORTS[sortKey].cmp;
+
+  const rowsFor = (items) => items.slice().sort(sortCmp).map((s) => {
+    const initials = (s.name || "").split(" ").map((w) => w[0]).slice(0, 2).join("").toUpperCase();
+    const avatar = s.photo ? `<img src="${s.photo}" alt="" />` : initials;
+    return `
+    <tr class="clickable" data-act="view-student" data-id="${escapeHtml(s.id)}">
+      <td class="rt-photo" data-label=""><span class="avatar-sm">${avatar}</span></td>
+      <td data-label="Roll No.">${s.rollNumber ? escapeHtml(s.rollNumber) : "&mdash;"}</td>
+      <td data-label="Enrollment">${escapeHtml(s.enrollment)}</td>
+      <td data-label="Name">${escapeHtml(s.name)}</td>
+      <td data-label="Email">${escapeHtml(s.email)}</td>
+      <td data-label="Phone">${s.phone ? escapeHtml(s.phone) : "&mdash;"}</td>
+    </tr>`;
+  }).join("");
+
+  return topbar("Admin Panel", `Student Records \u00b7 ${clsKey}`) + `
+    <div class="content">
+      <button type="button" class="btn btn-ghost" style="margin-bottom:16px" data-act="back-to-classes">&larr; All classes</button>
+      <div class="card" style="margin-bottom:20px">
+        <div class="card-head">
+          <h3>${classTag(clsKey)} <span style="color:var(--muted);font-weight:500">&middot; ${list.length} student${list.length === 1 ? "" : "s"}</span></h3>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+            <div class="searchbar"><input id="staffSearch" placeholder="Search name, roll no., enrollment or email&hellip;" value="${escapeHtml(state.staffQuery || "")}" /></div>
+            <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)">Sort by
+              <select id="rosterSortSelect">
+                ${Object.entries(ROSTER_SORTS).map(([key, def]) => `<option value="${key}" ${sortKey === key ? "selected" : ""}>${def.label}</option>`).join("")}
+              </select>
+            </label>
+            <button class="btn btn-ghost" data-act="reload-students">Refresh</button>
+            <button class="btn btn-gold" data-act="open-export" ${list.length ? "" : "disabled"}>Export&hellip;</button>
+          </div>
+        </div>
+        ${list.length ? `<div class="table-scroll"><table class="responsive-table"><thead><tr><th></th><th>Roll No.</th><th>Enrollment</th><th>Name</th><th>Email</th><th>Phone</th></tr></thead><tbody>${rowsFor(list)}</tbody></table></div>` : `<div class="empty-state">No students in this class${q ? " match your search" : ""}.</div>`}
+      </div>
+    </div>
+    ${state.showExport ? exportModal(clsKey, list.slice().sort(sortCmp)) : ""}
+    ${state.detailStudent ? studentDetailModal(state.detailStudent) : ""}`;
+}
+
+function studentCertificatesBlock(s) {
+  const list = state.certificates || [];
+  const rows = !state.certificatesLoaded
+    ? `<div class="spinner-line">Loading certificates&hellip;</div>`
+    : list.length === 0
+    ? `<div class="empty-state">No certificates uploaded yet.</div>`
+    : list.map((c) => `
+        <div style="padding:12px 0;border-top:1px solid var(--line-soft);display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap">
+          <div style="min-width:0">
+            <div style="font-weight:700;font-size:13.5px;margin-bottom:3px">${escapeHtml(c.eventName)}</div>
+            <div style="color:var(--muted);font-size:12px;line-height:1.55">
+              ${escapeHtml(c.organizingInstitute)}<br/>
+              Academic year ${escapeHtml(c.academicYear)}
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;flex:none">
+            ${certificatePill(c.status)}
+            ${c.fileUrl ? `<a class="btn btn-ghost" style="padding:5px 10px;font-size:12px" href="${c.fileUrl}" target="_blank" rel="noopener">View</a>` : ""}
+            <button type="button" class="btn btn-ghost" style="padding:5px 10px;font-size:12px;color:var(--danger)" data-act="delete-cert-admin" data-id="${c.id}">Delete</button>
+          </div>
+        </div>`).join("");
+
+  return `
+  <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--line-soft)">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+      <h3 style="margin:0;font-family:var(--font-display);font-size:14.5px;font-weight:700">Certificates</h3>
+      <span class="pill pill-gray">${list.length}</span>
+    </div>
+    ${rows}
+    <details style="margin-top:14px">
+      <summary style="cursor:pointer;font-size:12.5px;font-weight:600;color:var(--primary-2)">Add a certificate for this student</summary>
+      <form data-form="admin-certificate" style="margin-top:12px">
+        <div class="field"><label>Academic year <span class="req">*</span></label><input name="academicYear" placeholder="e.g. 2024-25" required /></div>
+        <div class="field"><label>Organizing institute <span class="req">*</span></label><input name="organizingInstitute" placeholder="e.g. XYZ College of Engineering" required /></div>
+        <div class="field"><label>Event name <span class="req">*</span></label><input name="eventName" placeholder="e.g. National Level Hackathon" required /></div>
+        <div class="field"><label>Status <span class="req">*</span></label>
+          <select name="status" required>
+            <option value="" selected disabled>Select&hellip;</option>
+            ${CERTIFICATE_STATUSES.map((st) => `<option value="${st}">${st}</option>`).join("")}
+          </select>
+        </div>
+        <div class="field">
+          <label>Certificate file <span class="req">*</span></label>
+          <label class="upload-zone" for="adminCertificateInput">
+            <span class="upload-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4"/><path d="M6 10l6-6 6 6"/><path d="M4 20h16"/></svg></span>
+            <p style="margin:0 0 4px;font-weight:600;font-size:14px" id="adminCertificateZoneLabel">Click to choose a file</p>
+            <p style="color:var(--muted);font-size:12px;margin:0">JPG, PNG or PDF, under 5&nbsp;MB</p>
+            <input id="adminCertificateInput" name="certificate" type="file" accept="image/png,image/jpeg,application/pdf" required />
+          </label>
+        </div>
+        <button type="submit" class="btn btn-gold btn-block" ${state.busy ? "disabled" : ""}>Save certificate</button>
+      </form>
+    </details>
+  </div>`;
+}
+
+function studentDetailModal(s) {
+  const photo = s.photo || null;
+  const photoBlock = `<div style="margin-bottom:16px">${photo
+    ? `<img src="${photo}" alt="Photo of ${escapeHtml(s.name)}" style="width:96px;height:116px;object-fit:cover;border-radius:6px;border:1px solid var(--line)"/>`
+    : `<div style="width:96px;height:116px;border-radius:6px;border:1px dashed var(--line);background:var(--bg-soft);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:11px;text-align:center;padding:6px">No photo uploaded</div>`}</div>`;
+
+  if (!state.editingStudent) {
+    const rows = [
+      ["Roll number", s.rollNumber || "&mdash;"], ["Enrollment", s.enrollment], ["Class", `${s.cls} &middot; ${CLASS_LABELS[s.cls] || ""}`],
+      ["Email", s.email], ["Phone", s.phone || "&mdash;"],
+      ["Date of birth", fmtDate(s.dob) || "&mdash;"], ["Gender", s.gender || "&mdash;"], ["Blood group", s.bloodGroup || "&mdash;"],
+      s.cls === "FY"
+        ? ["SSC / 10th marks", s.sscMarks ? `${s.sscMarks}%` : "&mdash;"]
+        : ["Previous semester", s.semester ? `Semester ${s.semester}${s.semMarks ? ` &middot; ${s.semMarks}%` : ""}` : "&mdash;"],
+      ["Living address", [s.addr1, s.addr2, s.city, s.state, s.pincode].filter(Boolean).join(", ") || "&mdash;"],
+      ["Guardian address", [s.gAddr1, s.gAddr2, s.gCity, s.gState, s.gPincode].filter(Boolean).join(", ") || "&mdash;"],
+      ["Guardian", s.guardianName ? `${s.guardianName} (${s.guardianRelation || "guardian"})` : "&mdash;"],
+      ["Guardian phone", s.guardianPhone || "&mdash;"], ["Guardian occupation", s.guardianOccupation || "&mdash;"],
+      ["Registered", fmtDate(s.createdAt) || "&mdash;"], ["Source", s.source === "import" ? "Bulk import" : "Self-registered"],
+    ];
+    const items = rows.map(([k, v]) => `<div class="item"><div class="k">${escapeHtml(k)}</div><div class="v">${v}</div></div>`).join("");
+    return `
+    <div class="modal-backdrop" data-act="close-modal">
+      <div class="modal">
+        <div class="modal-head"><h3>${escapeHtml(s.name)}</h3>
+          <div style="display:flex;gap:8px;align-items:center">
+            <button class="btn btn-ghost" data-act="edit-student">Edit</button>
+            <button class="modal-close" data-act="close-modal" aria-label="Close">&times;</button>
+          </div>
+        </div>
+        <div class="modal-body">
+          ${photoBlock}
+          <div class="kv">${items}</div>
+          ${studentCertificatesBlock(s)}
+          <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--line-soft)">
+            <button type="button" class="btn btn-danger" data-act="delete-student" data-id="${escapeHtml(s.id)}">Remove student</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  // ---- edit mode ----
+  const v = (k) => escapeHtml(s[k] || "");
+  const opt = (val, label) => `<option value="${val}" ${s.cls === val ? "selected" : ""}>${label}</option>`;
+  return `
+  <div class="modal-backdrop" data-act="close-modal">
+    <div class="modal">
+      <div class="modal-head"><h3>Edit &middot; ${escapeHtml(s.name)}</h3><button class="modal-close" data-act="close-modal" aria-label="Close">&times;</button></div>
+      <div class="modal-body">
+        <form data-form="edit-student">
+          ${state.editStudentMsg ? `<div class="form-error">${escapeHtml(state.editStudentMsg)}</div>` : ""}
+          <div class="field-row">
+            <div class="field"><label>Full name</label><input name="name" value="${v("name")}" required /></div>
+            <div class="field"><label>Enrollment no.</label><input name="enrollment" value="${v("enrollment")}" required /></div>
+          </div>
+          <div class="field-row">
+            <div class="field"><label>Roll number</label><input name="rollNumber" value="${v("rollNumber")}" /></div>
+            <div class="field"><label>Class</label><select name="cls">${opt("FY", "FY &middot; First Year")}${opt("SY", "SY &middot; Second Year")}${opt("TY", "TY &middot; Third Year")}</select></div>
+          </div>
+          <div class="field-row">
+            <div class="field"><label>Phone</label><input name="phone" value="${v("phone")}" /></div>
+          </div>
+          <div class="field"><label>Email</label><input name="email" type="email" value="${v("email")}" required /></div>
+          <div class="field-row">
+            <div class="field"><label>Date of birth</label><input name="dob" type="date" value="${v("dob")}" /></div>
+            <div class="field"><label>Gender</label>
+              <select name="gender">
+                <option value="" ${!s.gender ? "selected" : ""}>&mdash;</option>
+                <option value="Male" ${s.gender === "Male" ? "selected" : ""}>Male</option>
+                <option value="Female" ${s.gender === "Female" ? "selected" : ""}>Female</option>
+                <option value="Other" ${s.gender === "Other" ? "selected" : ""}>Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="field"><label>Blood group</label>
+            <select name="bloodGroup">
+              <option value="" ${!s.bloodGroup ? "selected" : ""}>&mdash;</option>
+              ${BLOOD_GROUPS.map((bg) => `<option value="${bg}" ${s.bloodGroup === bg ? "selected" : ""}>${bg}</option>`).join("")}
+            </select>
+          </div>
+          ${s.cls === "FY"
+            ? `<div class="field"><label>SSC / 10th marks (%)</label><input name="sscMarks" type="number" min="0" max="100" step="0.01" value="${v("sscMarks")}" /></div>`
+            : `<div class="field-row">
+                <div class="field"><label>Previous semester</label>
+                  <select name="semester">
+                    <option value="" ${!s.semester ? "selected" : ""}>&mdash;</option>
+                    ${[1, 2, 3, 4, 5, 6].map((n) => `<option value="${n}" ${String(s.semester || "") === String(n) ? "selected" : ""}>Semester ${n}</option>`).join("")}
+                  </select>
+                </div>
+                <div class="field"><label>Previous semester marks (%)</label><input name="semMarks" type="number" min="0" max="100" step="0.01" value="${v("semMarks")}" /></div>
+              </div>`}
+          <div class="field"><label>Living address line 1</label><input name="addr1" value="${v("addr1")}" /></div>
+          <div class="field"><label>Living address line 2</label><input name="addr2" value="${v("addr2")}" /></div>
+          <div class="field-row">
+            <div class="field"><label>City</label><input name="city" value="${v("city")}" /></div>
+            <div class="field"><label>State</label><input name="state" value="${v("state")}" /></div>
+          </div>
+          <div class="field"><label>Pincode</label><input name="pincode" value="${v("pincode")}" /></div>
+          <div class="field"><label>Guardian address line 1</label><input name="gAddr1" value="${v("gAddr1")}" /></div>
+          <div class="field"><label>Guardian address line 2</label><input name="gAddr2" value="${v("gAddr2")}" /></div>
+          <div class="field-row">
+            <div class="field"><label>Guardian city</label><input name="gCity" value="${v("gCity")}" /></div>
+            <div class="field"><label>Guardian state</label><input name="gState" value="${v("gState")}" /></div>
+          </div>
+          <div class="field"><label>Guardian pincode</label><input name="gPincode" value="${v("gPincode")}" /></div>
+          <div class="field-row">
+            <div class="field"><label>Guardian name</label><input name="guardianName" value="${v("guardianName")}" /></div>
+            <div class="field"><label>Guardian relation</label><input name="guardianRelation" value="${v("guardianRelation")}" /></div>
+          </div>
+          <div class="field-row">
+            <div class="field"><label>Guardian phone</label><input name="guardianPhone" value="${v("guardianPhone")}" /></div>
+            <div class="field"><label>Guardian occupation</label><input name="guardianOccupation" value="${v("guardianOccupation")}" /></div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:6px">
+            <button type="submit" class="btn btn-gold" ${state.busy ? "disabled" : ""}>Save changes</button>
+            <button type="button" class="btn btn-ghost" data-act="cancel-edit-student">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* =========================================================================
+   PASSOUT STUDENTS — detail modal
+   ========================================================================= */
+function passoutDetailModal(p) {
+  const submittedAt = p.submittedAt ? fmtDate(p.submittedAt) : "—";
+  return `
+  <div class="modal-backdrop" data-act="close-passout-modal">
+    <div class="modal" style="max-width:520px">
+      <div class="modal-head">
+        <h3 style="display:flex;align-items:center;gap:8px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+          Passout Student Details
+        </h3>
+        <button class="modal-close" data-act="close-passout-modal" aria-label="Close">&times;</button>
+      </div>
+      <div class="modal-body">
+        ${p.idCardUrl ? `
+        <div style="text-align:center;margin-bottom:20px">
+          <a href="${escapeHtml(p.idCardUrl)}" target="_blank" rel="noopener" title="Click to view full size">
+            <img src="${escapeHtml(p.idCardUrl)}" alt="College / Organisation ID Card"
+              style="max-width:100%;max-height:220px;object-fit:contain;border-radius:8px;border:1.5px solid var(--line);box-shadow:var(--shadow-sm);cursor:zoom-in" />
+          </a>
+          <div style="font-size:11px;color:var(--muted);margin-top:6px">College / Organisation ID Card &middot; <a href="${escapeHtml(p.idCardUrl)}" target="_blank" rel="noopener" style="color:var(--accent)">Open full size</a></div>
+        </div>` : `
+        <div style="text-align:center;padding:20px 0 16px;color:var(--muted);font-size:13px">No ID card uploaded</div>`}
+        <div class="kv">
+          <div class="item"><div class="k">Full Name</div><div class="v">${escapeHtml(p.name || "—")}</div></div>
+          <div class="item"><div class="k">Contact Number</div><div class="v">${escapeHtml(p.phone || "—")}</div></div>
+          <div class="item"><div class="k">Gender</div><div class="v">${escapeHtml(p.gender || "—")}</div></div>
+          <div class="item"><div class="k">Submitted On</div><div class="v">${submittedAt}</div></div>
+          <div class="item" style="grid-column:1/-1"><div class="k">Joined College / Organisation</div><div class="v">${escapeHtml(p.organization || "—")}</div></div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* =========================================================================
+   PASSOUT STUDENTS — PDF export
+   ========================================================================= */
+function doPassoutExportPdf(list) {
+  if (!list.length) { toast("No records to export.", "err"); return; }
+  const today = new Date().toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
+  const rows = list.map((p, i) => `
+    <tr>
+      <td>${i + 1}</td>
+      <td>${escapeHtml(p.name || "")}</td>
+      <td>${escapeHtml(p.phone || "")}</td>
+      <td>${escapeHtml(p.gender || "")}</td>
+      <td>${escapeHtml(p.organization || "")}</td>
+      <td>${p.idCardUrl ? `<a href="${escapeHtml(p.idCardUrl)}" target="_blank">View</a>` : "—"}</td>
+      <td>${p.submittedAt ? fmtDate(p.submittedAt) : "—"}</td>
+    </tr>`).join("");
+
+  const doc = `<!doctype html><html><head><meta charset="UTF-8"/>
+    <title>Passout Students · ICRE Gargoti</title>
+    <style>
+      body{font-family:Arial,Helvetica,sans-serif;color:#0B1220;padding:24px;}
+      h1{font-size:17px;margin:0 0 2px;}
+      .sub{font-size:11.5px;color:#5B6474;margin:0 0 18px;}
+      table{width:100%;border-collapse:collapse;font-size:11px;}
+      th,td{border:1px solid #DBDFE6;padding:6px 8px;text-align:left;vertical-align:top;}
+      th{background:#F1F2F5;font-weight:700;}
+      tr:nth-child(even) td{background:#FAFAFB;}
+      a{color:#C2760C;text-decoration:none;}
+      @page{size:A4 landscape;margin:14mm;}
+    </style></head>
+    <body>
+      <h1>Institute of Civil &amp; Rural Engineering, Gargoti &mdash; Computer Engineering</h1>
+      <p class="sub">Passout Students Record &middot; ${list.length} submission${list.length === 1 ? "" : "s"} &middot; Exported ${today}</p>
+      <table>
+        <thead><tr><th>#</th><th>Full Name</th><th>Contact Number</th><th>Gender</th><th>College / Organisation</th><th>ID Card</th><th>Submitted On</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+      <script>window.onload = () => window.print();<\/script>
+    </body></html>`;
+
+  const win = window.open("", "_blank");
+  if (!win) { toast("Please allow pop-ups for this site to export a PDF.", "err"); return; }
+  win.document.open(); win.document.write(doc); win.document.close();
+}
+
+/* =========================================================================
+   PASSOUT STUDENTS — Excel/CSV export
+   ========================================================================= */
+function doPassoutExportExcel(list) {
+  if (!list.length) { toast("No records to export.", "err"); return; }
+  const headers = ["#", "Full Name", "Contact Number", "Gender", "College / Organisation", "ID Card URL", "Submitted On"];
+  const csvRows = [headers.join(",")];
+  list.forEach((p, i) => {
+    const row = [
+      i + 1,
+      `"${(p.name || "").replace(/"/g, '""')}"`,
+      `"${(p.phone || "").replace(/"/g, '""')}"`,
+      `"${(p.gender || "").replace(/"/g, '""')}"`,
+      `"${(p.organization || "").replace(/"/g, '""')}"`,
+      `"${(p.idCardUrl || "").replace(/"/g, '""')}"`,
+      `"${p.submittedAt ? fmtDate(p.submittedAt) : ""}"`,
+    ];
+    csvRows.push(row.join(","));
+  });
+  const csv = csvRows.join("\r\n");
+  const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = "passout_students.csv"; a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  toast("Excel/CSV file downloaded.");
+}
+
+/* =========================================================================
+   PASSOUT STUDENTS — main view
+   ========================================================================= */
+function adminPassoutStudents() {
+  const list = state.passoutStudents || [];
+  const q = (state.passoutQuery || "").trim().toLowerCase();
+  const filtered = q ? list.filter((p) =>
+    (p.name || "").toLowerCase().includes(q) ||
+    (p.phone || "").toLowerCase().includes(q) ||
+    (p.organization || "").toLowerCase().includes(q) ||
+    (p.gender || "").toLowerCase().includes(q)
+  ) : list;
+
+  const rows = filtered.map((p, i) => {
+    const submittedAt = p.submittedAt ? fmtDate(p.submittedAt) : "&mdash;";
+    return `
+    <tr class="clickable" data-act="view-passout" data-idx="${i}" style="cursor:pointer">
+      <td data-label="#">${i + 1}</td>
+      <td data-label="Name"><strong>${escapeHtml(p.name || "&mdash;")}</strong></td>
+      <td data-label="Phone">${escapeHtml(p.phone || "&mdash;")}</td>
+      <td data-label="Gender"><span class="pill pill-gray">${escapeHtml(p.gender || "&mdash;")}</span></td>
+      <td data-label="College / Organisation">${escapeHtml(p.organization || "&mdash;")}</td>
+      <td data-label="ID Card">${p.idCardUrl
+        ? `<span class="pill pill-green">✓ Uploaded</span>`
+        : `<span style="color:var(--muted);font-size:12px">Not uploaded</span>`}
+      </td>
+      <td data-label="Submitted">${submittedAt}</td>
+    </tr>`;
+  }).join("");
+
+  const isLoaded = state.passoutStudents !== null;
+
+  return topbar("Admin Panel", "Passout Students") + `
+    <div class="content">
+      <div class="card">
+        <div class="card-head">
+          <h3>Passout Student Submissions <span style="color:var(--muted);font-weight:500">&middot; ${filtered.length} record${filtered.length === 1 ? "" : "s"}</span></h3>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+            <div class="searchbar"><input id="passoutSearch" placeholder="Search name, phone, gender or organisation&hellip;" value="${escapeHtml(state.passoutQuery || "")}" /></div>
+            <button class="btn btn-ghost" data-act="reload-passout">Refresh</button>
+            <button class="btn btn-ghost" data-act="export-passout-pdf" ${filtered.length ? "" : "disabled"} title="Export to PDF">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              Export PDF
+            </button>
+            <button class="btn btn-gold" data-act="export-passout-excel" ${filtered.length ? "" : "disabled"} title="Export to Excel / CSV">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg>
+              Export Excel
+            </button>
+          </div>
+        </div>
+        <div style="padding:8px 20px;font-size:12px;color:var(--muted);border-bottom:1px solid var(--line-soft)">
+          Click any row to view full details and the ID card photo.
+        </div>
+        ${!isLoaded
+          ? `<div class="spinner-line" style="padding:20px 24px">Loading submissions&hellip;</div>`
+          : filtered.length
+          ? `<div class="table-scroll"><table class="responsive-table">
+              <thead><tr><th>#</th><th>Full Name</th><th>Phone</th><th>Gender</th><th>College / Organisation</th><th>ID Card</th><th>Submitted On</th></tr></thead>
+              <tbody>${rows}</tbody>
+             </table></div>`
+          : `<div class="empty-state">${q ? "No submissions match your search." : "No passout student submissions yet."}</div>`
+        }
+      </div>
+    </div>
+    ${state.detailPassout ? passoutDetailModal(state.detailPassout) : ""}`;
+}
+
+/* =========================================================================
+   PROFILE FIELD CONTROLS
+   ========================================================================= */
+function adminFieldControls() {
+  const settings = state.fieldSettings || {};
+
+  const sectionOrder = [];
+  const bySection = {};
+  FIELD_DEFS.forEach((f) => {
+    if (!bySection[f.section]) { bySection[f.section] = []; sectionOrder.push(f.section); }
+    bySection[f.section].push(f);
+  });
+
+  const sectionsHtml = sectionOrder.map((title) => {
+    const rows = bySection[title].map((f) => {
+      const on = settings[f.key] !== false;
+      return `
+      <div class="toggle-row">
+        <div>
+          <div class="t-label">${escapeHtml(f.label)}</div>
+          <div class="t-sub">${on ? "Students can edit this field" : "Locked \u2014 students can\u2019t edit this field right now"}</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" data-act="toggle-field" data-field="${f.key}" ${on ? "checked" : ""} ${state.busy ? "disabled" : ""} />
+          <span class="slider"></span>
+        </label>
+      </div>`;
+    }).join("");
+    return `<div class="card" style="margin-bottom:18px"><div class="card-head"><h3>${escapeHtml(title)}</h3></div><div class="card-pad" style="padding-top:2px;padding-bottom:2px">${rows}</div></div>`;
+  }).join("");
+
+  const registrationOpen = settings.registrationOpen !== false;
+  const passoutFormOpen = settings.passoutFormOpen !== false;
+
+  return topbar("Admin Panel", "Profile Field Controls") + `
+    <div class="content">
+      <div class="card" style="margin-bottom:18px">
+        <div class="card-head"><h3>Student Registration</h3></div>
+        <div class="card-pad" style="padding-top:2px;padding-bottom:2px">
+          <div class="toggle-row">
+            <div>
+              <div class="t-label">New-student self-registration</div>
+              <div class="t-sub">${registrationOpen ? "Open \u2014 new students can create an account from the login page" : "Closed \u2014 the \u201cRegister here\u201d option is hidden and new sign-ups are blocked"}</div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" data-act="toggle-registration" ${registrationOpen ? "checked" : ""} ${state.busy ? "disabled" : ""} />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="toggle-row">
+            <div>
+              <div class="t-label">Passout student form submissions</div>
+              <div class="t-sub">${passoutFormOpen ? "Open \u2014 passout students can submit their details from the login page" : "Closed \u2014 the passout form is hidden and submissions are blocked"}</div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" data-act="toggle-passout-form" ${passoutFormOpen ? "checked" : ""} ${state.busy ? "disabled" : ""} />
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="margin-bottom:18px">
+        <div class="card-pad" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+          <p style="margin:0;color:var(--muted);font-size:13.5px;max-width:62ch">Turn individual profile fields on or off for students. When a field is off, students see it locked on their profile page and can't change it until you turn it back on again &mdash; you can still edit any field yourself from Student Records at any time.</p>
+          <div style="display:flex;gap:10px;flex:none">
+            <button class="btn btn-ghost" data-act="enable-all-fields" ${state.busy ? "disabled" : ""}>Turn all on</button>
+            <button class="btn btn-ghost" data-act="disable-all-fields" ${state.busy ? "disabled" : ""}>Turn all off</button>
+          </div>
+        </div>
+      </div>
+      ${sectionsHtml}
+    </div>`;
+}
+
+/* =========================================================================
+   NOTICES
+   Post an announcement to one class or all three. It shows to students as
+   a popup the next time they open the portal, and stays visible in their
+   Notices tab afterward.
+   ========================================================================= */
+function adminNotices() {
+  const list = state.notices || [];
+  const targetLabel = (t) => (!t || t === "ALL") ? "All classes" : `${t} \u00b7 ${CLASS_LABELS[t] || t}`;
+  const targetTagClass = (t) => (!t || t === "ALL") ? "class-ALL" : `class-${t}`;
+
+  const rows = list.map((n) => `
+    <div class="notice-card">
+      <div class="n-head">
+        <span class="n-title">${escapeHtml(n.title)}</span>
+        <span class="class-tag ${targetTagClass(n.targetClass)}">${escapeHtml(targetLabel(n.targetClass))}</span>
+      </div>
+      <div class="n-body">${escapeHtml(n.body)}</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
+        <span class="n-meta">Posted by ${escapeHtml(n.postedBy || "Admin")} &middot; ${fmtDate(n.postedAt) || "&mdash;"}</span>
+        <button class="btn btn-danger" style="padding:5px 12px;font-size:12.5px" data-act="delete-notice" data-id="${escapeHtml(n.id)}">Delete</button>
+      </div>
+    </div>`).join("");
+
+  return topbar("Admin Panel", "Notices") + `
+    <div class="content">
+      <form data-form="add-notice" class="card" style="margin-bottom:20px">
+        <div class="card-head"><h3>Post a new notice</h3></div>
+        <div class="card-pad">
+          ${state.noticeMsg ? `<div class="form-error">${escapeHtml(state.noticeMsg)}</div>` : ""}
+          <div class="field"><label>Title</label><input name="title" required maxlength="150" placeholder="e.g. Diwali vacation dates" /></div>
+          <div class="field"><label>Message</label><textarea name="body" rows="4" required placeholder="What do students need to know?" style="width:100%;padding:10px 13px;border:1.5px solid var(--line);border-radius:var(--radius-sm);font-size:14.5px;font-family:inherit;background:#FBFCFE;color:var(--ink);resize:vertical"></textarea></div>
+          <div class="field">
+            <label>Send to</label>
+            <select name="targetClass">
+              <option value="ALL">All classes (FY, SY &amp; TY)</option>
+              <option value="FY">FY &middot; First Year only</option>
+              <option value="SY">SY &middot; Second Year only</option>
+              <option value="TY">TY &middot; Third Year only</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-gold" ${state.busy ? "disabled" : ""}>Post notice</button>
+        </div>
+      </form>
+      <div class="card">
+        <div class="card-head"><h3>${list.length} notice${list.length === 1 ? "" : "s"} posted</h3></div>
+        ${list.length ? `<div class="card-pad" style="padding-top:4px">${rows}</div>` : `<div class="empty-state">No notices posted yet. Students will see one as a popup the next time they sign in, and it'll stay in their Notices tab too.</div>`}
+      </div>
+    </div>`;
+}
+
+/* =========================================================================
+   MANAGE ADMINS
+   ========================================================================= */
+function adminUsers() {
+  const list = state.adminList || [];
+  const rows = list.map((u) => `
+    <tr>
+      <td data-label="Name">${escapeHtml(u.name)}</td>
+      <td data-label="Email">${escapeHtml(u.email)}</td>
+      <td data-label="">${`<button class="btn btn-danger" data-act="delete-staff" data-id="${escapeHtml(u.id)}" ${u.id === state.session.id ? "disabled title=\"You can't remove your own account\"" : ""}>Remove</button>`}</td>
+    </tr>`).join("");
+
+  const addForm = state.showAddAdmin ? `
+    <form data-form="add-staff" class="card" style="margin-top:20px">
+      <div class="card-head"><h3>New administrator account</h3></div>
+      <div class="card-pad">
+        ${state.adminUsersMsg ? `<div class="form-error">${escapeHtml(state.adminUsersMsg)}</div>` : ""}
+        <div class="field"><label>Full name</label><input name="name" required /></div>
+        <div class="field"><label>Email</label><input name="email" type="email" required /></div>
+        <div class="field"><label>Temporary password</label><input name="password" type="password" required placeholder="Min. 6 characters" /></div>
+        <div style="display:flex;gap:10px">
+          <button type="submit" class="btn btn-gold" ${state.busy ? "disabled" : ""}>Create account</button>
+          <button type="button" class="btn btn-ghost" data-act="cancel-add-staff">Cancel</button>
+        </div>
+      </div>
+    </form>` : "";
+
+  return topbar("Admin Panel", "Administrator Access") + `
+    <div class="content">
+      <div class="card">
+        <div class="card-head"><h3>${list.length} administrator account${list.length === 1 ? "" : "s"}</h3>${!state.showAddAdmin ? `<button class="btn btn-gold" data-act="show-add-staff">+ Add administrator</button>` : ""}</div>
+        ${list.length ? `<div class="table-scroll"><table class="responsive-table"><thead><tr><th>Name</th><th>Email</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>` : `<div class="empty-state">No administrator accounts yet.</div>`}
+      </div>
+      ${addForm}
+    </div>`;
+}
+
+/* =========================================================================
+   BULK STUDENT IMPORT
+   ========================================================================= */
+function adminImport() {
+  const preview = state.importPreview;
+  return topbar("Admin Panel", "Bulk Student Import") + `
+    <div class="content">
+      <div class="card">
+        <div class="card-head"><h3>Bulk student import (CSV)</h3></div>
+        <div class="card-pad">
+          <p style="color:var(--muted);font-size:13.5px;margin-top:0">CSV must include columns: <code>name, enrollment, class, email, phone</code> (class is FY, SY or TY). An optional <code>rollNumber</code> column is also supported. Imported students get a temporary password equal to their enrollment number.</p>
+          <label class="upload-zone" for="csvInput">
+            <span class="upload-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4"/><path d="M6 10l6-6 6 6"/><path d="M4 20h16"/></svg></span>
+            <p style="margin:0 0 4px;font-weight:600;font-size:14px" id="csvZoneLabel">Click to choose a CSV file</p>
+            <p style="color:var(--muted);font-size:12px;margin:0">Comma-separated, first row = headers</p>
+            <input id="csvInput" type="file" accept=".csv,text/csv" />
+          </label>
+          <div id="csvPreviewPad" style="margin-top:16px">${preview ? renderCsvPreview(preview) : ""}</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function renderCsvPreview(preview) {
+  const rowsHtml = preview.rows.slice(0, 12).map((r) => `<tr><td data-label="Roll No.">${r.rollNumber ? escapeHtml(r.rollNumber) : "&mdash;"}</td><td data-label="Enrollment">${escapeHtml(r.enrollment)}</td><td data-label="Name">${escapeHtml(r.name)}</td><td data-label="Class">${escapeHtml(r.cls)}</td><td data-label="Email">${escapeHtml(r.email)}</td></tr>`).join("");
+  return `
+    <p style="margin:0 0 10px"><b>${preview.rows.length}</b> row(s) ready to import${preview.skipped.length ? `, <b>${preview.skipped.length}</b> skipped (missing/invalid fields)` : ""}.</p>
+    ${preview.rows.length ? `<div class="table-scroll" style="max-height:260px;overflow-y:auto;border:1px solid var(--line-soft);border-radius:8px;margin-bottom:12px">
+      <table class="responsive-table"><thead><tr><th>Roll No.</th><th>Enrollment</th><th>Name</th><th>Class</th><th>Email</th></tr></thead><tbody>${rowsHtml}</tbody></table>
+    </div>` : ""}
+    ${preview.rows.length ? `<button class="btn btn-gold" data-act="confirm-import" ${state.busy ? "disabled" : ""}>Import ${preview.rows.length} student(s)</button>` : ""}
+  `;
+}
+
+function adminContent() {
+  const a = state.active;
+  if (a === "roster") return adminRoster();
+  if (a === "notices") return adminNotices();
+  if (a === "passout") return adminPassoutStudents();
+  if (a === "fields") return adminFieldControls();
+  if (a === "users") return adminUsers();
+  if (a === "import") return adminImport();
+  return adminOverview();
+}
+
+/* =========================================================================
+   MAIN RENDER
+   ========================================================================= */
+function renderPortal() {
+  const user = state.currentUser;
+  if (!user) return `<div class="content"><div class="spinner-line">Loading your account&hellip;</div></div>`;
+  return `<div class="shell">${sidebar()}<div class="main">${adminContent()}${siteFooter()}</div></div>`;
+}
+
+function render() {
+  // Only re-focus the search box if the user was already typing in it —
+  // otherwise every render (opening a tab, a background refresh, etc.)
+  // steals focus and pops the mobile keyboard open unprompted.
+  const activeEl = document.activeElement;
+  const wasSearchFocused = !!(activeEl && activeEl.id === "staffSearch");
+  const searchSelStart = wasSearchFocused ? activeEl.selectionStart : null;
+
+  let html = "";
+  if (state.screen === "login") html += renderLogin();
+  else html += renderPortal();
+
+  if (state.toast) {
+    html += `<div class="toast ${state.toast.kind === "err" ? "err" : ""}" role="status">${escapeHtml(state.toast.text)}</div>`;
+  }
+  root.innerHTML = html;
+
+  const search = document.getElementById("staffSearch");
+  if (search) {
+    if (wasSearchFocused) {
+      search.focus();
+      const pos = searchSelStart != null ? searchSelStart : search.value.length;
+      search.setSelectionRange(pos, pos);
+    }
+    search.addEventListener("input", (e) => { state.staffQuery = e.target.value; render(); });
+  }
+
+  const rosterSortSelect = document.getElementById("rosterSortSelect");
+  if (rosterSortSelect) {
+    rosterSortSelect.addEventListener("change", (e) => { state.rosterSort = e.target.value; render(); });
+  }
+
+  const csvInput = document.getElementById("csvInput");
+  if (csvInput) {
+    csvInput.addEventListener("change", () => {
+      const lbl = document.getElementById("csvZoneLabel");
+      const file = csvInput.files[0];
+      if (!file) return;
+      if (lbl) lbl.textContent = file.name;
+      const reader = new FileReader();
+      reader.onload = () => handleCsvText(String(reader.result || ""));
+      reader.readAsText(file);
+    });
+  }
+
+  const adminCertificateInput = document.getElementById("adminCertificateInput");
+  if (adminCertificateInput) {
+    adminCertificateInput.addEventListener("change", () => {
+      const lbl = document.getElementById("adminCertificateZoneLabel");
+      if (lbl) lbl.textContent = adminCertificateInput.files[0] ? adminCertificateInput.files[0].name : "Click to choose a file";
+    });
+  }
+
+  const passoutSearch = document.getElementById("passoutSearch");
+  if (passoutSearch) {
+    passoutSearch.focus();
+    passoutSearch.addEventListener("input", (e) => { state.passoutQuery = e.target.value; render(); });
+  }
+}
+
+/* =========================================================================
+   CSV PARSE (client-side preview only — the actual write goes through the API)
+   ========================================================================= */
+function parseCsv(text) {
+  const lines = text.split(/\r\n|\n|\r/).filter((l) => l.trim().length);
+  if (!lines.length) return { header: [], rows: [] };
+  const header = lines[0].split(",").map((h) => h.trim().toLowerCase());
+  const rows = lines.slice(1).map((line) => {
+    const cells = line.split(",").map((c) => c.trim());
+    const obj = {};
+    header.forEach((h, i) => { obj[h] = cells[i] || ""; });
+    return obj;
+  });
+  return { header, rows };
+}
+
+function handleCsvText(text) {
+  const pad = document.getElementById("csvPreviewPad");
+  const { header, rows } = parseCsv(text);
+  const required = ["name", "enrollment", "class", "email", "phone"];
+  const missing = required.filter((r) => !header.includes(r));
+  if (missing.length) {
+    state.importPreview = null;
+    if (pad) pad.innerHTML = `<div class="form-error">Missing column(s): ${missing.join(", ")}. Expected: name, enrollment, class, email, phone.</div>`;
+    return;
+  }
+  const valid = [];
+  const skipped = [];
+  rows.forEach((r, i) => {
+    const cls = (r["class"] || "").toUpperCase();
+    if (!r.name || !r.enrollment || !r.email || CLASS_ORDER.indexOf(cls) === -1) { skipped.push(i + 2); return; }
+    valid.push({ name: r.name, enrollment: r.enrollment, rollNumber: r.rollnumber || "", cls, email: r.email, phone: r.phone || "" });
+  });
+  state.importPreview = { rows: valid, skipped };
+  if (pad) pad.innerHTML = renderCsvPreview(state.importPreview);
+}
+
+async function confirmImport() {
+  if (!state.importPreview || !state.importPreview.rows.length) return;
+  state.busy = true; render();
+  const res = await api("importStudents", { rows: state.importPreview.rows });
+  state.busy = false;
+  if (!res.ok) { toast(res.error || "Import failed.", "err"); return render(); }
+  state.importPreview = null;
+  toast(`Imported ${res.count} student(s)${res.skippedRows && res.skippedRows.length ? `, ${res.skippedRows.length} row(s) skipped as duplicates` : ""}.`);
+  await loadStudentsList();
+  state.active = "roster";
+  render();
+}
+
+/* =========================================================================
+   DATA LOADERS
+   ========================================================================= */
+async function loadStudentsList() {
+  const res = await api("listStudents", {});
+  state.students = res.ok ? res.students : [];
+}
+async function loadAdminList() {
+  const res = await api("listStaff", {});
+  // The backend may still return a mixed staff/admin list — keep admin accounts only.
+  const all = res.ok ? res.staff : [];
+  state.adminList = all.filter((u) => u.role === "admin");
+}
+async function loadFieldSettings() {
+  const res = await api("getFieldSettings", {});
+  state.fieldSettings = res.ok ? res.settings : {};
+}
+async function loadNotices() {
+  const res = await api("listNotices", {});
+  state.notices = res.ok ? res.notices : [];
+}
+async function loadPassoutStudents() {
+  const res = await api("listPassoutStudents", {});
+  state.passoutStudents = res.ok ? (res.passoutStudents || []) : [];
+}
+
+/* =========================================================================
+   FORM SUBMIT HANDLERS
+   ========================================================================= */
+async function handleLoginSubmit(form) {
+  const email = form.get("email").trim();
+  const password = form.get("password");
+  state.loginError = "";
+  state.busy = true; render();
+
+  const res = await api("login", { portal: "admin", email, password });
+  state.busy = false;
+  if (!res.ok) { state.loginError = res.error || "Sign in failed."; return render(); }
+  if (res.role !== "admin") { state.loginError = "This account does not have administrator access."; return render(); }
+
+  state.session = { id: res.user.id || res.user.email };
+  state.currentUser = res.user;
+  state.screen = "portal"; state.active = "overview";
+  render();
+
+  // These calls are independent, so fire them in parallel instead of
+  // one after another — each one hits the Apps Script backend separately.
+  loadStudentsList().then(render);
+  loadAdminList().then(render);
+  loadFieldSettings().then(render);
+  loadNotices().then(render);
+  loadPassoutStudents().then(render);
+}
+
+async function handleAddStaffSubmit(form) {
+  const name = form.get("name").trim();
+  const email = form.get("email").trim();
+  const password = form.get("password");
+  state.adminUsersMsg = "";
+  if (!name || !email || !password) { state.adminUsersMsg = "Please fill in every field."; return render(); }
+  if (password.length < 6) { state.adminUsersMsg = "Password must be at least 6 characters."; return render(); }
+
+  state.busy = true; render();
+  const res = await api("addStaff", { name, role: "admin", email, password });
+  state.busy = false;
+  if (!res.ok) { state.adminUsersMsg = res.error || "Could not create account."; return render(); }
+  state.showAddAdmin = false;
+  toast(`Admin account created for ${name}.`);
+  await loadAdminList();
+  render();
+}
+
+async function handleAddNoticeSubmit(form) {
+  const title = form.get("title").trim();
+  const body = form.get("body").trim();
+  const targetClass = form.get("targetClass") || "ALL";
+  state.noticeMsg = "";
+  if (!title || !body) { state.noticeMsg = "Both a title and message are required."; return render(); }
+
+  state.busy = true; render();
+  const res = await api("addNotice", { title, body, targetClass, postedBy: state.currentUser.name });
+  state.busy = false;
+  if (!res.ok) { state.noticeMsg = res.error || "Could not post notice."; return render(); }
+  const targetLabel = targetClass === "ALL" ? "all classes" : `${targetClass} students`;
+  toast(`Notice posted to ${targetLabel}.`);
+  await loadNotices();
+  render();
+}
+
+async function handleDeleteNotice(id) {
+  if (!confirm("Delete this notice? Students who haven't seen it yet won't see it anymore.")) return;
+  state.busy = true; render();
+  const res = await api("deleteNotice", { id });
+  state.busy = false;
+  if (!res.ok) { toast(res.error || "Could not delete notice.", "err"); return render(); }
+  toast("Notice deleted.");
+  await loadNotices();
+  render();
+}
+
+async function handleAdminEditStudentSubmit(form) {
+  const updates = {
+    name: form.get("name").trim(), enrollment: form.get("enrollment").trim(), rollNumber: form.get("rollNumber").trim(), cls: form.get("cls"),
+    email: form.get("email").trim(), phone: form.get("phone").trim(), dob: form.get("dob"), gender: form.get("gender"),
+    bloodGroup: form.get("bloodGroup").trim(), addr1: form.get("addr1").trim(), addr2: form.get("addr2").trim(),
+    city: form.get("city").trim(), state: form.get("state").trim(), pincode: form.get("pincode").trim(),
+    gAddr1: form.get("gAddr1").trim(), gAddr2: form.get("gAddr2").trim(), gCity: form.get("gCity").trim(),
+    gState: form.get("gState").trim(), gPincode: form.get("gPincode").trim(),
+    guardianName: form.get("guardianName").trim(), guardianRelation: form.get("guardianRelation").trim(),
+    guardianPhone: form.get("guardianPhone").trim(), guardianOccupation: form.get("guardianOccupation").trim(),
+  };
+  if (updates.cls === "FY") updates.sscMarks = form.get("sscMarks").trim();
+  else { updates.semester = form.get("semester").trim(); updates.semMarks = form.get("semMarks").trim(); }
+  state.editStudentMsg = "";
+  if (!updates.name || !updates.enrollment || !updates.email) { state.editStudentMsg = "Name, enrollment and email are required."; return render(); }
+
+  state.busy = true; render();
+  const res = await api("updateStudent", { id: state.detailStudent.id, updates, asAdmin: true });
+  state.busy = false;
+  if (!res.ok) { state.editStudentMsg = res.error || "Could not save changes."; return render(); }
+
+  state.detailStudent = res.student;
+  state.editingStudent = false;
+  toast(`${res.student.name}'s record has been updated.`);
+  await loadStudentsList();
+  state.detailStudent = (state.students || []).find((x) => x.id === res.student.id) || state.detailStudent;
+  render();
+}
+
+async function handleToggleField(field, enabled) {
+  state.busy = true; render();
+  const res = await api("updateFieldSettings", { settings: { [field]: enabled } });
+  state.busy = false;
+  if (!res.ok) { toast(res.error || "Could not update setting.", "err"); return render(); }
+  state.fieldSettings = res.settings;
+  toast(`${FIELD_LABELS[field] || field} is now ${enabled ? "on" : "off"} for students.`);
+  render();
+}
+
+async function handleToggleRegistration(enabled) {
+  state.busy = true; render();
+  const res = await api("updateFieldSettings", { settings: { registrationOpen: enabled } });
+  state.busy = false;
+  if (!res.ok) { toast(res.error || "Could not update setting.", "err"); return render(); }
+  state.fieldSettings = res.settings;
+  toast(`Student registration is now ${enabled ? "open" : "closed"}.`);
+  render();
+}
+
+async function handleTogglePassoutForm(enabled) {
+  state.busy = true; render();
+  const res = await api("updateFieldSettings", { settings: { passoutFormOpen: enabled } });
+  state.busy = false;
+  if (!res.ok) { toast(res.error || "Could not update setting.", "err"); return render(); }
+  state.fieldSettings = res.settings;
+  toast(`Passout student form is now ${enabled ? "open" : "closed"}.`);
+  render();
+}
+
+async function handleSetAllFields(enabled) {
+  state.busy = true; render();
+  const settings = {};
+  FIELD_DEFS.forEach((f) => { settings[f.key] = enabled; });
+  const res = await api("updateFieldSettings", { settings });
+  state.busy = false;
+  if (!res.ok) { toast(res.error || "Could not update settings.", "err"); return render(); }
+  state.fieldSettings = res.settings;
+  toast(`All profile fields turned ${enabled ? "on" : "off"} for students.`);
+  render();
+}
+
+async function handleDeleteStaff(id) {
+  state.busy = true; render();
+  const res = await api("deleteStaff", { id });
+  state.busy = false;
+  if (!res.ok) { toast(res.error || "Could not remove account.", "err"); return render(); }
+  toast("Account removed.");
+  await loadAdminList();
+  render();
+}
+
+async function handleDeleteStudent(id) {
+  state.busy = true; render();
+  const res = await api("deleteStudent", { id });
+  state.busy = false;
+  if (!res.ok) { toast(res.error || "Could not remove student.", "err"); return render(); }
+  toast("Student record removed.");
+  state.detailStudent = null;
+  state.editingStudent = false;
+  await loadStudentsList();
+  render();
+}
+
+async function handleAdminCertificateSubmit(formEl) {
+  if (!state.detailStudent) return;
+  const studentId = state.detailStudent.id;
+  const fd = new FormData(formEl);
+  const academicYear = String(fd.get("academicYear") || "").trim();
+  const organizingInstitute = String(fd.get("organizingInstitute") || "").trim();
+  const eventName = String(fd.get("eventName") || "").trim();
+  const status = String(fd.get("status") || "").trim();
+  const input = formEl.querySelector('input[type="file"]');
+  const file = input && input.files[0];
+
+  if (!academicYear || !organizingInstitute || !eventName || !status) { toast("Please fill in every field.", "err"); return; }
+  if (!file) { toast("Please choose a certificate file first.", "err"); return; }
+  if (file.size > 5 * 1024 * 1024) { toast("File is too large (max 5 MB).", "err"); return; }
+
+  state.busy = true; render();
+  try {
+    const fileUrl = await uploadCertificateFile(file);
+    const res = await api("addCertificate", {
+      studentId, academicYear, organizingInstitute, eventName, status, fileUrl,
+    });
+    state.busy = false;
+    if (!res.ok) { toast(res.error || "Could not save certificate.", "err"); return render(); }
+    state.certificates = [res.certificate, ...(state.certificates || [])];
+    toast("Certificate saved.");
+  } catch (err) {
+    state.busy = false;
+    toast(err.message || "Could not process that file. Please try again.", "err");
+  }
+  render();
+}
+
+async function handleAdminDeleteCertificate(id) {
+  if (!state.detailStudent) return;
+  if (!confirm("Delete this certificate? This can't be undone.")) return;
+  state.busy = true; render();
+  const res = await api("deleteCertificate", { id, studentId: state.detailStudent.id });
+  state.busy = false;
+  if (!res.ok) { toast(res.error || "Could not delete certificate.", "err"); return render(); }
+  state.certificates = (state.certificates || []).filter((c) => c.id !== id);
+  toast("Certificate deleted.");
+  render();
+}
+
+/* =========================================================================
+   EVENT DELEGATION
+   ========================================================================= */
+root.addEventListener("submit", (e) => {
+  const formEl = e.target.closest("form[data-form]");
+  if (!formEl) return;
+  e.preventDefault();
+  const kind = formEl.dataset.form;
+  const fd = new FormData(formEl);
+  const get = (k) => (fd.get(k) == null ? "" : String(fd.get(k)));
+  const form = { get };
+
+  if (kind === "login") return handleLoginSubmit(form);
+  if (kind === "add-staff") return handleAddStaffSubmit(form);
+  if (kind === "add-notice") return handleAddNoticeSubmit(form);
+  if (kind === "edit-student") return handleAdminEditStudentSubmit(form);
+  if (kind === "admin-certificate") return handleAdminCertificateSubmit(formEl);
+});
+
+root.addEventListener("change", (e) => {
+  if (e.target.matches('[data-act="toggle-field"]')) {
+    handleToggleField(e.target.dataset.field, e.target.checked);
+  } else if (e.target.matches('[data-act="toggle-registration"]')) {
+    handleToggleRegistration(e.target.checked);
+  } else if (e.target.matches('[data-act="toggle-passout-form"]')) {
+    handleTogglePassoutForm(e.target.checked);
+  } else if (e.target.matches('[data-act="toggle-export-col"]')) {
+    if (!state.exportCols) state.exportCols = new Set();
+    const key = e.target.dataset.col;
+    if (e.target.checked) state.exportCols.add(key); else state.exportCols.delete(key);
+    render();
+  }
+});
+
+root.addEventListener("click", (e) => {
+  const el = e.target.closest("[data-act]");
+  if (!el) return;
+  const act = el.dataset.act;
+
+  if (act === "nav") {
+    state.active = el.dataset.key; state.detailStudent = null; state.editingStudent = false; state.sidebarOpen = false;
+    if (el.dataset.key === "roster") { state.rosterClass = null; state.staffQuery = ""; }
+    if (el.dataset.key === "passout") { state.passoutQuery = ""; if (!state.passoutStudents) loadPassoutStudents().then(render); }
+    state.showExport = false; state.exportCols = null;
+    render();
+    if (el.dataset.key === "overview") loadStudentsList().then(render);
+  }
+  else if (act === "select-roster-class") { state.rosterClass = el.dataset.key; state.staffQuery = ""; state.detailStudent = null; state.editingStudent = false; state.showExport = false; state.exportCols = null; render(); }
+  else if (act === "back-to-classes") { state.rosterClass = null; state.staffQuery = ""; state.detailStudent = null; state.editingStudent = false; state.showExport = false; state.exportCols = null; render(); }
+  else if (act === "logout") { state.session = null; state.currentUser = null; state.students = null; state.adminList = null; state.screen = "login"; state.active = "overview"; state.sidebarOpen = false; render(); }
+  else if (act === "toggle-sidebar") { state.sidebarOpen = !state.sidebarOpen; render(); }
+  else if (act === "close-sidebar") { state.sidebarOpen = false; render(); }
+  else if (act === "show-add-staff") { state.showAddAdmin = true; state.adminUsersMsg = ""; render(); }
+  else if (act === "cancel-add-staff") { state.showAddAdmin = false; render(); }
+  else if (act === "confirm-import") { confirmImport(); }
+  else if (act === "view-student") {
+    state.detailStudent = (state.students || []).find((s) => s.id === el.dataset.id) || null;
+    state.editingStudent = false; state.editStudentMsg = "";
+    state.certificates = []; state.certificatesLoaded = false;
+    render();
+    if (state.detailStudent) loadCertificates(state.detailStudent.id).then(render);
+  }
+  else if (act === "close-modal") { if (e.target !== el) return; state.detailStudent = null; state.editingStudent = false; state.certificates = []; state.certificatesLoaded = false; render(); }
+  else if (act === "edit-student") { state.editingStudent = true; state.editStudentMsg = ""; render(); }
+  else if (act === "cancel-edit-student") { state.editingStudent = false; state.editStudentMsg = ""; render(); }
+  else if (act === "delete-staff") { if (!el.disabled && confirm("Remove this admin account? This cannot be undone.")) handleDeleteStaff(el.dataset.id); }
+  else if (act === "delete-notice") { handleDeleteNotice(el.dataset.id); }
+  else if (act === "delete-student") { if (confirm("Remove this student's record? This cannot be undone.")) handleDeleteStudent(el.dataset.id); }
+  else if (act === "delete-cert-admin") { handleAdminDeleteCertificate(el.dataset.id); }
+  else if (act === "reload-students") { loadStudentsList().then(render); }
+  else if (act === "open-export") { state.showExport = true; state.exportCols = null; render(); }
+  else if (act === "close-export") { if (e.target !== el) return; state.showExport = false; render(); }
+  else if (act === "export-select-all") { state.exportCols = new Set(exportColumnsFor(state.rosterClass).map((c) => c.key)); render(); }
+  else if (act === "export-select-none") { state.exportCols = new Set(); render(); }
+  else if (act === "confirm-export") {
+    const clsKey = state.rosterClass;
+    const q = (state.staffQuery || "").trim().toLowerCase();
+    let list = (state.students || []).filter((s) => s.cls === clsKey);
+    if (q) list = list.filter((s) => (s.name || "").toLowerCase().includes(q) || (s.enrollment || "").toLowerCase().includes(q) || (s.rollNumber || "").toLowerCase().includes(q) || (s.email || "").toLowerCase().includes(q));
+    const sortKey = ROSTER_SORTS[state.rosterSort] ? state.rosterSort : "roll";
+    list = list.slice().sort(ROSTER_SORTS[sortKey].cmp);
+    doExportPdf(clsKey, list);
+    state.showExport = false; render();
+  }
+  else if (act === "enable-all-fields") { handleSetAllFields(true); }
+  else if (act === "disable-all-fields") { handleSetAllFields(false); }
+  else if (act === "reload-passout") { loadPassoutStudents().then(render); }
+  else if (act === "view-passout") {
+    const q = (state.passoutQuery || "").trim().toLowerCase();
+    const list = state.passoutStudents || [];
+    const filtered = q ? list.filter((p) =>
+      (p.name || "").toLowerCase().includes(q) ||
+      (p.phone || "").toLowerCase().includes(q) ||
+      (p.organization || "").toLowerCase().includes(q) ||
+      (p.gender || "").toLowerCase().includes(q)
+    ) : list;
+    const idx = parseInt(el.dataset.idx, 10);
+    state.detailPassout = filtered[idx] || null;
+    render();
+  }
+  else if (act === "close-passout-modal") { if (e.target !== el) return; state.detailPassout = null; render(); }
+  else if (act === "export-passout-pdf") {
+    const q = (state.passoutQuery || "").trim().toLowerCase();
+    const list = state.passoutStudents || [];
+    const filtered = q ? list.filter((p) =>
+      (p.name || "").toLowerCase().includes(q) ||
+      (p.phone || "").toLowerCase().includes(q) ||
+      (p.organization || "").toLowerCase().includes(q) ||
+      (p.gender || "").toLowerCase().includes(q)
+    ) : list;
+    doPassoutExportPdf(filtered);
+  }
+  else if (act === "export-passout-excel") {
+    const q = (state.passoutQuery || "").trim().toLowerCase();
+    const list = state.passoutStudents || [];
+    const filtered = q ? list.filter((p) =>
+      (p.name || "").toLowerCase().includes(q) ||
+      (p.phone || "").toLowerCase().includes(q) ||
+      (p.organization || "").toLowerCase().includes(q) ||
+      (p.gender || "").toLowerCase().includes(q)
+    ) : list;
+    doPassoutExportExcel(filtered);
+  }
+});
+
+/* =========================================================================
+   INIT — no session is ever persisted, so every load starts at the
+   login screen with nothing to hydrate.
+   ========================================================================= */
+render();
+</script>
+</body>
+</html>

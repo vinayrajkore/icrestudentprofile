@@ -1,0 +1,1478 @@
+<!doctype html>
+<!-- Built by Vinayraj Kore -->
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="author" content="Vinayraj Kore" />
+<meta name="description" content="Official student portal for the Department of Computer Engineering, Institute of Civil and Rural Engineering, Gargoti. Manage your profile, contact details and photo ID online." />
+<meta name="theme-color" content="#0F1B40" />
+<title>Student Portal · Computer Engineering · ICRE Gargoti</title>
+<link rel="icon" type="image/png" href="favicon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:        #101828;
+  --primary:    #2953E0;
+  --primary-2:  #3B66EC;
+  --primary-dark:#0F1B40;
+  --accent:     #0EA5A4;
+  --accent-light:#D6F0EE;
+  --bg:         #F5F6FA;
+  --bg-soft:    #EEF1F6;
+  --card:       #FFFFFF;
+  --line:       #E1E5EC;
+  --line-soft:  #EDF0F5;
+  --success:    #15803D;
+  --success-bg: #E9F7EE;
+  --danger:     #C0352B;
+  --danger-bg:  #FCEAE8;
+  --muted:      #64748B;
+  --font-display: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', Consolas, monospace;
+  --radius: 12px; --radius-sm: 8px;
+  --shadow-sm: 0 1px 2px rgba(16,24,40,.06);
+  --shadow-md: 0 12px 28px rgba(16,24,40,.10);
+  --sidebar-w: 252px;
+}
+*{box-sizing:border-box;}
+html,body{height:100%;margin:0;}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);-webkit-font-smoothing:antialiased;}
+button{font-family:inherit;}
+a{color:inherit;}
+:focus-visible{outline:2.5px solid var(--primary);outline-offset:2px;}
+::selection{background:var(--accent-light);color:var(--primary-dark);}
+.gear-line{height:3px;width:100%;background:var(--primary);opacity:.9;}
+.gear-line.thin{height:2px;}
+.seal{position:relative;display:inline-flex;align-items:center;justify-content:center;border-radius:10px;background:var(--primary-dark);box-shadow:var(--shadow-sm);flex:none;}
+.seal img{display:block;object-fit:contain;}
+.seal .fallback{font-family:var(--font-display);font-weight:700;color:#fff;}
+
+/* ---------- site header (logo, college name, staff/admin button) ---------- */
+.auth-page{min-height:100vh;display:flex;flex-direction:column;}
+.site-header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 28px;background:var(--primary-dark);border-bottom:1px solid rgba(255,255,255,.08);box-shadow:0 2px 10px rgba(11,18,32,.18);position:relative;z-index:2;flex-wrap:wrap;}
+.site-header-brand{display:flex;align-items:center;gap:12px;min-width:0;}
+.site-header-brand .seal{width:52px;height:52px;flex:none;background:rgba(255,255,255,.08);}
+.site-header-brand .name{font-family:var(--font-display);font-weight:700;font-size:14px;line-height:1.3;color:#fff;}
+.site-header-brand .name span{display:block;font-family:var(--font-mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--accent);font-weight:500;margin-top:3px;}
+.corner-link{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:8px;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.14);color:#fff;font-size:12.5px;font-weight:600;text-decoration:none;letter-spacing:.01em;cursor:pointer;transition:background .15s ease;flex:none;}
+.corner-link:hover{background:rgba(255,255,255,.12);}
+@media (max-width:480px){
+  .site-header{padding:11px 16px;}
+  .site-header-brand .name{font-size:12.5px;}
+  .site-header-brand .name span{font-size:9px;}
+  .corner-link{padding:8px 12px;font-size:11.5px;}
+}
+
+/* ---------- login / register shell ---------- */
+.login-shell{flex:1;display:grid;grid-template-columns:1.05fr 1fr;position:relative;}
+@media (max-width:880px){.login-shell{grid-template-columns:1fr;}.login-left{display:none;}}
+.login-left{position:relative;background:linear-gradient(165deg,var(--primary-dark) 0%,#152357 55%,var(--primary) 130%);color:#EAF0FF;padding:56px 56px 40px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;}
+.login-left::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.08) 1px, transparent 1px);background-size:22px 22px;opacity:.5;}
+.login-left::after{content:"";position:absolute;left:50%;top:52%;width:380px;height:380px;transform:translate(-50%,-50%);background:url('logo-watermark-hero.png') no-repeat center/contain;pointer-events:none;}
+.login-hero{position:relative;z-index:1;}
+.login-hero .eyebrow{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:#8FB1FF;}
+.login-hero h1{font-family:var(--font-display);font-weight:700;font-size:clamp(32px,4vw,44px);line-height:1.12;margin:14px 0 18px;letter-spacing:-.01em;}
+.login-hero p{font-size:15px;line-height:1.65;max-width:46ch;color:#C6D2EE;}
+.login-foot{position:relative;z-index:1;display:flex;gap:28px;font-family:var(--font-mono);font-size:11.5px;color:#93A3C9;}
+.login-foot span b{color:#fff;display:block;font-family:var(--font-display);font-size:19px;font-weight:700;}
+.login-right{display:flex;align-items:center;justify-content:center;padding:40px 28px;background:var(--bg);overflow-y:auto;}
+.login-card{width:100%;max-width:400px;background:var(--card);border:1px solid var(--line-soft);border-radius:12px;padding:32px 30px 28px;box-shadow:var(--shadow-md);}
+@media (max-width:520px){.login-card{padding:26px 20px 22px;border-radius:10px;}}
+.login-card h2{font-family:var(--font-display);font-size:23px;font-weight:700;margin:0 0 6px;}
+.login-card .sub{color:var(--muted);font-size:14px;margin-bottom:24px;}
+.field{margin-bottom:16px;}
+.field label{display:block;font-size:12.5px;font-weight:600;color:var(--ink);margin-bottom:6px;}
+.field .req{color:var(--danger);}
+.field input,.field select{width:100%;padding:10px 13px;border:1.5px solid var(--line);border-radius:var(--radius-sm);font-size:14.5px;background:#FBFCFE;color:var(--ink);outline:none;transition:border-color .12s ease,box-shadow .12s ease;}
+.field input:disabled{background:var(--bg-soft);color:var(--muted);}
+.field input:focus,.field select:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(41,83,224,.14);}
+.field .hint-sm{display:block;font-size:11.5px;color:var(--muted);margin-top:5px;}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media (max-width:520px){.field-row{grid-template-columns:1fr;}}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 18px;border-radius:var(--radius-sm);border:none;cursor:pointer;font-size:14px;font-weight:600;font-family:var(--font-body);transition:filter .12s ease,background .12s ease,box-shadow .12s ease;}
+.btn-primary{background:var(--primary);color:#fff;width:100%;padding:12px;}
+.btn-primary:hover:not(:disabled){filter:brightness(1.07);}
+.btn-primary:disabled{opacity:.55;cursor:default;}
+.btn-gold{background:var(--accent);color:#fff;}
+.btn-gold:hover:not(:disabled){filter:brightness(1.06);}
+.btn-ghost{background:transparent;border:1.5px solid var(--line);color:var(--ink);}
+.btn-ghost:hover:not(:disabled){background:var(--bg-soft);}
+.btn-block{width:100%;}
+.btn:disabled{opacity:.55;cursor:default;}
+.link-btn{background:none;border:none;padding:0;color:var(--primary);font-weight:600;font-size:inherit;cursor:pointer;text-decoration:underline;font-family:inherit;}
+.login-switch{margin-top:16px;font-size:13.5px;text-align:center;color:var(--muted);}
+.login-error,.form-error{background:var(--danger-bg);color:var(--danger);border-radius:var(--radius-sm);padding:10px 14px;font-size:13px;margin-bottom:16px;font-weight:600;}
+.form-ok{background:var(--success-bg);color:var(--success);border-radius:var(--radius-sm);padding:10px 14px;font-size:13px;margin-bottom:16px;font-weight:600;}
+
+/* ---------- app shell ---------- */
+.shell{display:flex;min-height:100vh;}
+.sidebar{width:var(--sidebar-w);flex:none;background:var(--primary-dark);color:#D7DEEF;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;}
+.sidebar-crest{display:flex;align-items:center;gap:12px;padding:22px 20px 18px;}
+.sidebar-crest .seal{width:56px;height:56px;}
+.sidebar-crest .seal img{width:46px;height:46px;}
+.sidebar-crest .name{font-family:var(--font-display);font-size:13px;line-height:1.25;font-weight:700;color:#fff;}
+.sidebar-crest .dept{font-family:var(--font-mono);font-size:10px;letter-spacing:.07em;color:#8FB1FF;text-transform:uppercase;margin-top:3px;}
+.sidebar nav{padding:10px 12px;display:flex;flex-direction:column;gap:2px;flex:1;overflow-y:auto;}
+.nav-item{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:var(--radius-sm);font-size:13.5px;font-weight:500;color:#B9C4DE;text-decoration:none;cursor:pointer;border:none;background:transparent;width:100%;text-align:left;transition:background .12s ease;}
+.nav-item:hover{background:rgba(255,255,255,.06);}
+.nav-item.active{background:rgba(255,255,255,.10);color:#fff;box-shadow:inset 3px 0 0 var(--primary-2);}
+.sidebar-foot{padding:16px 20px 22px;border-top:1px solid rgba(255,255,255,.08);}
+.user-chip{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.avatar{width:34px;height:34px;border-radius:50%;background:var(--primary-2);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#fff;flex:none;overflow:hidden;}
+.avatar img{width:100%;height:100%;object-fit:cover;}
+.user-chip .who b{display:block;font-size:13px;color:#fff;}
+.user-chip .who span{display:block;font-size:11px;color:#8792AE;font-family:var(--font-mono);text-transform:capitalize;}
+.main{flex:1;min-width:0;display:flex;flex-direction:column;position:relative;}
+.main::before{content:"";position:fixed;left:calc(50% + var(--sidebar-w)/2);top:50%;width:340px;height:340px;transform:translate(-50%,-50%);background:url('logo-watermark-soft.png') no-repeat center/contain;pointer-events:none;z-index:0;}
+.main>*{position:relative;z-index:1;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:18px 32px;background:var(--card);border-bottom:1px solid var(--line);box-shadow:0 1px 3px rgba(11,18,32,.05);position:relative;z-index:2;flex-wrap:wrap;gap:10px;}
+.topbar-left{display:flex;align-items:center;gap:14px;min-width:0;}
+.topbar h1{font-family:var(--font-display);font-size:20px;margin:0;font-weight:700;}
+.topbar .crumb{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:2px;}
+.content{padding:28px 32px 48px;flex:1 0 auto;}
+
+/* ---------- mobile nav (hamburger + off-canvas sidebar) ---------- */
+.menu-btn{display:none;align-items:center;justify-content:center;width:42px;height:42px;min-width:42px;border-radius:9px;border:1.5px solid var(--line);background:var(--card);cursor:pointer;flex:none;padding:0;}
+.menu-btn span{position:relative;display:block;width:18px;height:2px;background:var(--ink);}
+.menu-btn span::before,.menu-btn span::after{content:"";position:absolute;left:0;width:18px;height:2px;background:var(--ink);}
+.menu-btn span::before{top:-6px;}
+.menu-btn span::after{top:6px;}
+.sidebar-backdrop{display:none;}
+@media (max-width:860px){
+  .shell{display:flex;flex-direction:column;}
+  .menu-btn{display:inline-flex;}
+  .sidebar{position:fixed;top:0;left:0;height:100dvh;z-index:80;transform:translateX(-100%);transition:transform .22s ease;box-shadow:var(--shadow-md);}
+  .sidebar.open{transform:translateX(0);}
+  .sidebar-backdrop{display:block;position:fixed;inset:0;background:rgba(10,15,35,.48);z-index:70;opacity:0;pointer-events:none;transition:opacity .2s ease;}
+  .sidebar-backdrop.show{opacity:1;pointer-events:auto;}
+  .main{width:100%;flex:1;}
+  .main::before{left:50%;width:260px;height:260px;}
+}
+@media (max-width:640px){
+  .topbar{padding:14px 16px;}
+  .topbar h1{font-size:18px;}
+  .badge-dept{display:none;}
+  .content{padding:16px 16px 32px;}
+  .card-pad{padding:16px;}
+  .card-head{padding:14px 16px;flex-direction:column;align-items:stretch;}
+  .card-head > *{width:100%;}
+  .card-head h3{width:auto;}
+  .grid{gap:14px;}
+  .btn{min-height:44px;}
+  .nav-item{min-height:44px;}
+  .toast{left:16px;right:16px;bottom:16px;max-width:none;text-align:center;}
+  .field input,.field select{padding:11px 12px;}
+}
+.grid{display:grid;gap:20px;}
+.grid-3{grid-template-columns:repeat(3,1fr);}
+.grid-2{grid-template-columns:repeat(2,1fr);}
+@media (max-width:900px){.grid-3,.grid-2{grid-template-columns:1fr;}}
+.card{background:var(--card);border:1px solid var(--line-soft);border-radius:var(--radius);box-shadow:var(--shadow-sm);}
+.card-pad{padding:22px 24px;}
+.card-head{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid var(--line-soft);flex-wrap:wrap;gap:10px;}
+.card-head h3{margin:0;font-family:var(--font-display);font-size:16px;font-weight:700;}
+.stat{display:flex;flex-direction:column;gap:6px;}
+.stat .label{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);}
+.stat .num{font-family:var(--font-display);font-size:32px;font-weight:700;color:var(--primary);}
+.stat .delta{font-size:12px;color:var(--success);}
+.pill{display:inline-flex;align-items:center;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:600;}
+.pill-green{background:var(--success-bg);color:var(--success);}
+.pill-gold{background:var(--accent-light);color:#0A6E67;}
+.pill-gray{background:var(--bg-soft);color:var(--muted);}
+.badge-dept{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;background:var(--primary);color:#fff;padding:3px 9px;border-radius:5px;}
+.topbar-right{display:flex;align-items:center;gap:12px;flex:none;}
+.topbar-avatar{background:none;border:none;padding:0;cursor:pointer;border-radius:50%;flex:none;transition:box-shadow .15s ease,transform .1s ease;}
+.topbar-avatar:hover{box-shadow:0 0 0 3px rgba(41,83,224,.16);}
+.topbar-avatar:active{transform:scale(.96);}
+.topbar-avatar .avatar{width:36px;height:36px;font-size:13px;border:2px solid var(--card);box-shadow:0 0 0 1.5px var(--line);}
+.photo-frame{width:110px;height:132px;border-radius:8px;border:2px solid var(--card);box-shadow:0 0 0 1px var(--line),var(--shadow-sm);object-fit:cover;background:var(--bg-soft);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:12px;overflow:hidden;flex:none;}
+.photo-frame img{width:100%;height:100%;object-fit:cover;}
+.upload-zone{border:1.5px dashed var(--line);border-radius:var(--radius);padding:28px 20px;text-align:center;background:var(--bg);cursor:pointer;transition:border-color .12s ease,background .12s ease;display:flex;flex-direction:column;align-items:center;gap:2px;}
+.upload-zone:hover{border-color:var(--primary);background:var(--accent-light);}
+.upload-zone input[type=file]{display:none;}
+.upload-zone .upload-icon{width:38px;height:38px;border-radius:50%;background:var(--accent-light);color:var(--primary);display:flex;align-items:center;justify-content:center;margin-bottom:10px;flex:none;}
+.upload-zone .upload-icon svg{width:18px;height:18px;}
+
+.empty-state{padding:32px 24px;text-align:center;color:var(--muted);font-size:13.5px;}
+.toast{position:fixed;bottom:22px;right:22px;background:var(--primary-dark);color:#fff;padding:12px 18px;border-radius:var(--radius-sm);font-size:13.5px;font-weight:600;box-shadow:var(--shadow-md);z-index:50;animation:toastIn .18s ease;}
+.notice-overlay{position:fixed;inset:0;background:rgba(10,16,30,.6);backdrop-filter:blur(2px);display:flex;align-items:center;justify-content:center;z-index:90;padding:20px;animation:noticeFade .18s ease;}
+.notice-modal{background:var(--card);border-radius:16px;max-width:460px;width:100%;max-height:85vh;overflow-y:auto;box-shadow:0 24px 60px rgba(11,18,32,.28);animation:noticePop .28s cubic-bezier(.34,1.56,.64,1);}
+.notice-modal-band{height:6px;border-radius:16px 16px 0 0;background:linear-gradient(90deg,var(--primary),var(--accent));}
+.notice-modal-head{display:flex;align-items:flex-start;gap:14px;padding:24px 24px 0;}
+.notice-modal-icon{width:44px;height:44px;border-radius:12px;background:var(--accent-light);color:#0B6E6D;display:flex;align-items:center;justify-content:center;flex:none;box-shadow:inset 0 0 0 1px rgba(11,110,109,.12);}
+.notice-modal-icon svg{width:22px;height:22px;}
+.notice-modal-title{flex:1;min-width:0;}
+.notice-modal-tag{font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--primary);display:block;margin-bottom:4px;}
+.notice-modal-title h3{margin:0;font-family:var(--font-display);font-size:18px;font-weight:800;line-height:1.3;color:var(--ink);}
+.notice-modal-close{background:var(--bg-soft);border:none;width:30px;height:30px;border-radius:50%;font-size:18px;cursor:pointer;color:var(--muted);line-height:1;flex:none;display:flex;align-items:center;justify-content:center;transition:background .12s ease,color .12s ease;}
+.notice-modal-close:hover{background:var(--danger-bg);color:var(--danger);}
+.notice-modal-body{padding:16px 24px 4px;font-size:14.5px;line-height:1.68;white-space:pre-wrap;color:var(--ink);}
+.notice-modal-meta{margin:14px 24px 0;padding-top:12px;border-top:1px solid var(--line-soft);display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:11px;color:var(--muted);}
+.notice-modal-dots{display:flex;gap:5px;padding:14px 24px 0;}
+.notice-modal-dots span{width:6px;height:6px;border-radius:50%;background:var(--line);}
+.notice-modal-dots span.on{background:var(--primary);}
+.notice-modal-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 24px 24px;}
+.notice-modal-foot .n-progress{font-size:12px;color:var(--muted);font-weight:500;}
+.notice-modal-foot .btn-primary{width:auto;padding:10px 22px;border-radius:9px;box-shadow:0 6px 16px rgba(41,83,224,.28);}
+@keyframes noticeFade{from{opacity:0;}to{opacity:1;}}
+@keyframes noticePop{from{opacity:0;transform:translateY(10px) scale(.96);}to{opacity:1;transform:translateY(0) scale(1);}}
+.progress-track{width:100%;height:10px;border-radius:999px;background:var(--bg-soft);overflow:hidden;}
+.progress-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--primary));transition:width .4s ease;}
+.progress-fill.done{background:linear-gradient(90deg,var(--success),var(--accent));}
+.congrats-overlay{position:fixed;inset:0;background:rgba(11,18,32,.6);display:flex;align-items:center;justify-content:center;z-index:95;padding:20px;animation:noticeFade .15s ease;}
+.congrats-modal{background:var(--card);border-radius:var(--radius);max-width:420px;width:100%;box-shadow:var(--shadow-md);padding:34px 28px 28px;text-align:center;animation:congratsPop .3s cubic-bezier(.34,1.56,.64,1);}
+.congrats-modal .congrats-icon{font-size:46px;line-height:1;margin-bottom:10px;}
+.congrats-modal h3{margin:0 0 8px;font-family:var(--font-display);font-size:19px;}
+.congrats-modal p{margin:0 0 22px;color:var(--muted);font-size:13.5px;line-height:1.55;}
+@keyframes congratsPop{from{opacity:0;transform:scale(.88);}to{opacity:1;transform:scale(1);}}
+.toast.err{background:var(--danger);}
+@keyframes toastIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.spinner-line{font-family:var(--font-mono);font-size:12.5px;color:var(--muted);padding:14px 0;}
+.site-footer{flex:none;background:var(--primary-dark);border-top:1px solid rgba(255,255,255,.08);padding:16px 32px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;font-size:11.5px;color:#9AA3B5;font-family:var(--font-mono);}
+.site-footer a{color:#fff;text-decoration:none;font-weight:600;}
+.site-footer a:hover{text-decoration:underline;}
+@media (max-width:520px){
+  .site-footer{padding:14px 16px;text-align:center;justify-content:center;}
+  .card-pad[style*="align-items:center"]{flex-direction:column;align-items:flex-start !important;}
+}
+
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script>
+console.log("%cICRE Gargoti \u00b7 Computer Engineering Student Portal", "font-weight:bold;font-size:13px;color:#2953E0;");
+console.log("%cBuilt by Vinayraj Kore", "font-size:12px;color:#0EA5A4;");
+
+/* =========================================================================
+   CONFIG — API_URL points at your backend. Currently set to the Apps
+   Script Web App URL (ends /exec). If you migrate to Supabase (see
+   supabase/MIGRATION.md), replace this with your deployed Edge Function
+   URL instead — everything else on this page stays the same, since both
+   backends speak the same { action, ...payload } -> { ok, ... } protocol.
+   ========================================================================= */
+const API_URL = "https://script.google.com/macros/s/REDACTED_SEE_CONFIG_JS/exec";
+const LOGO = "logo.png"; // place a file named exactly logo.png next to this HTML file
+const ADMIN_URL = "admin.html"; // staff & admin panel — keep this file alongside admin.html
+
+const DEPT_NAME = "Computer Engineering";
+const CLASS_LABELS = { FY: "First Year", SY: "Second Year", TY: "Third Year" };
+const CLASS_ORDER = ["FY", "SY", "TY"];
+
+// Photo storage — student photos are uploaded straight from the browser to
+// Cloudinary (not through Apps Script/Sheets) and only the resulting image
+// URL is saved to the "photo" column. Unsigned upload preset means no
+// secret key is ever exposed in this file.
+const CLOUDINARY_CLOUD_NAME = "g6idhdc9";
+const CLOUDINARY_UPLOAD_PRESET = "i9q883xz";
+const CLOUDINARY_UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
+// Certificates can be a photo of the certificate OR a PDF, so uploads go
+// through the "auto" endpoint (same cloud/preset) which detects the
+// resource type instead of assuming image.
+const CLOUDINARY_AUTO_UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/auto/upload`;
+
+// Prize / achievement status options offered on the certificate upload form.
+const CERTIFICATE_STATUSES = ["1st Prize", "2nd Prize", "3rd Prize", "Winner", "Runner-up", "Best Paper", "Participation", "Other"];
+
+// Which profile fields belong to which form on this page. Keep the keys in
+// sync with EDITABLE_STUDENT_FIELDS in Code.gs and FIELD_DEFS in admin.html
+// — the admin can turn any of these on/off from the Profile Field Controls
+// screen; when a field is off, students see it locked here and can't save
+// changes to it (the server enforces this too, this is just for the UI).
+const FIELD_SECTIONS = {
+  profile: ["rollNumber", "phone", "dob", "gender", "bloodGroup", "sscMarks", "semester", "semMarks"],
+  address: ["addr1", "addr2", "city", "state", "pincode"],
+  guardianAddress: ["gAddr1", "gAddr2", "gCity", "gState", "gPincode"],
+  guardian: ["guardianName", "guardianRelation", "guardianPhone", "guardianOccupation"],
+  photo: ["photo"],
+};
+
+// Standard blood-group options offered in the profile form and admin edit form.
+const BLOOD_GROUPS = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
+
+/* ---------- session lives only in memory for this tab — nothing is
+   persisted to localStorage, so every page load starts signed out. ---------- */
+
+/* =========================================================================
+   API — every read/write goes to the Google Sheet through Apps Script
+   ========================================================================= */
+async function api(action, payload) {
+  if (!API_URL || API_URL.indexOf("PASTE_YOUR") === 0) {
+    return { ok: false, error: "The portal isn't connected to a Google Sheet yet. Set API_URL at the top of this file to your deployed Apps Script Web App URL." };
+  }
+  try {
+    const res = await fetch(API_URL, {
+      method: "POST",
+      body: JSON.stringify(Object.assign({ action, portal: "student" }, payload || {})),
+    });
+    return await res.json();
+  } catch (err) {
+    return { ok: false, error: "Could not reach the server. Check your connection and the API_URL setting." };
+  }
+}
+
+/* ---------- tiny utils ---------- */
+function escapeHtml(str) {
+  return String(str ?? "").replace(/[&<>"']/g, (c) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+  }[c]));
+}
+function fmtDateTime(iso) {
+  if (!iso) return "";
+  try { return new Date(iso).toLocaleString("en-IN", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }); }
+  catch (e) { return String(iso); }
+}
+
+/* ---------- photo compression (resize + re-encode before it's uploaded) ---------- */
+function compressPhoto(file, maxW, maxH, quality) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      let { width, height } = img;
+      const ratio = Math.min(1, maxW / width, maxH / height);
+      width = Math.round(width * ratio); height = Math.round(height * ratio);
+      const canvas = document.createElement("canvas");
+      canvas.width = width; canvas.height = height;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, width, height);
+      canvas.toBlob(
+        (blob) => (blob ? resolve(blob) : reject(new Error("Could not process that image."))),
+        "image/jpeg",
+        quality
+      );
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("Could not read that image.")); };
+    img.src = url;
+  });
+}
+
+/* ---------- Cloudinary upload (browser → Cloudinary directly, unsigned) ---------- */
+async function uploadPhotoToCloudinary(blob) {
+  const form = new FormData();
+  form.append("file", blob, "photo.jpg");
+  form.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+
+  const res = await fetch(CLOUDINARY_UPLOAD_URL, { method: "POST", body: form });
+  if (!res.ok) throw new Error("Photo upload failed. Please try again.");
+  const data = await res.json();
+  if (!data.secure_url) throw new Error("Photo upload failed. Please try again.");
+  return data.secure_url;
+}
+
+// Certificates are uploaded as-is (no resizing/re-encoding) since a lot of
+// them are scanned PDFs, not just photos.
+async function uploadCertificateFile(file) {
+  const form = new FormData();
+  form.append("file", file);
+  form.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+
+  const res = await fetch(CLOUDINARY_AUTO_UPLOAD_URL, { method: "POST", body: form });
+  if (!res.ok) throw new Error("Certificate upload failed. Please try again.");
+  const data = await res.json();
+  if (!data.secure_url) throw new Error("Certificate upload failed. Please try again.");
+  return data.secure_url;
+}
+
+/* ---------- profile field on/off helpers ---------- */
+function fieldOn(key) {
+  // Default to "on" until the settings have actually loaded, so the form
+  // isn't flashing disabled fields for a moment on every page load.
+  if (!state.fieldSettings) return true;
+  return state.fieldSettings[key] !== false;
+}
+function sectionState(sectionKey) {
+  const keys = FIELD_SECTIONS[sectionKey] || [];
+  const onCount = keys.filter(fieldOn).length;
+  if (onCount === keys.length) return "all";
+  if (onCount === 0) return "none";
+  return "some";
+}
+function lockPill() {
+  return `<span class="pill pill-gray" style="margin-left:6px;font-size:9.5px;vertical-align:middle">Locked</span>`;
+}
+
+/* ---------- derived helpers ---------- */
+function profileCompleteness(s) {
+  const academicFields = s.cls === "FY" ? [s.sscMarks] : [s.semester, s.semMarks];
+  const fields = [s.rollNumber, s.dob, s.gender, s.bloodGroup, ...academicFields, s.addr1, s.city, s.state, s.pincode, s.gAddr1, s.gCity, s.gState, s.gPincode, s.guardianName, s.guardianPhone, s.photo];
+  const filled = fields.filter((f) => f && String(f).trim().length).length;
+  return Math.round((filled / fields.length) * 100);
+}
+
+// Called right after a profile save with the student record as it was
+// BEFORE that save. If completeness just crossed the 100% line, queue the
+// congratulations popup. Doesn't fire on a page that was already 100%
+// (e.g. re-saving a field that was already filled), only on the save that
+// actually finishes the profile.
+function maybeCelebrateCompletion(prevStudent) {
+  const before = profileCompleteness(prevStudent);
+  const after = profileCompleteness(state.currentUser);
+  if (before < 100 && after === 100) state.showCongrats = true;
+}
+
+/* ---------- which profile fields the admin currently has open ---------- */
+async function loadFieldSettings() {
+  const res = await api("getFieldSettings", {});
+  state.fieldSettings = res.ok ? res.settings : {};
+}
+
+/* ---------- whether new-student registration is currently open ----------
+   Uses the same settings map as the profile field toggles (key
+   "registrationOpen"), so it's fetched before login too — an unauthenticated
+   visitor still needs to know whether "Register here" is usable. Defaults to
+   open while loading / if the settings can't be reached, so a slow network
+   doesn't lock genuine students out. ---------- */
+async function loadRegistrationSetting() {
+  const res = await api("getFieldSettings", {});
+  if (res.ok && res.settings) {
+    state.registrationOpen = res.settings.registrationOpen !== false;
+    state.passoutFormOpen = res.settings.passoutFormOpen !== false;
+  }
+  render();
+}
+
+/* =========================================================================
+   UI / render layer
+   ========================================================================= */
+const root = document.getElementById("root");
+
+const state = {
+  screen: "login",          // 'login' | 'register' | 'passout' | 'portal'
+  loginError: "",
+  regError: "",
+  passoutError: "",         // error message on the passout form
+  passoutSuccess: false,    // true after successful passout form submission
+  busy: false,
+  active: "overview",
+  toast: null,
+  sidebarOpen: false,
+  session: null,            // { id } — in-memory only, never persisted
+  currentUser: null,        // hydrated student record (no password)
+  fieldSettings: null,      // cached { fieldKey: true|false } — which fields the admin has open for editing
+  registrationOpen: true,   // whether the admin currently allows new students to register
+  passoutFormOpen: true,    // whether the admin currently allows passout student submissions
+  certificates: [],         // this student's certificates, fetched lazily the first time the tab is opened
+  certificatesLoaded: false,
+  notices: [],              // notices for this student's class (or ALL), newest first
+  noticesLoaded: false,
+  noticeQueue: [],           // undismissed notices still waiting to be shown as a popup, oldest first
+  activeNotice: null,        // the notice currently shown in the popup, if any
+  showCongrats: false,       // true right after a save brings profile completeness to 100%
+};
+
+/* ---------- this student's certificates ---------- */
+async function loadCertificates() {
+  const res = await api("listCertificates", { studentId: state.currentUser.id });
+  state.certificates = res.ok ? res.certificates : [];
+  state.certificatesLoaded = true;
+}
+
+/* ---------- notices targeted at this student's class (or ALL) ----------
+   Dismissed notice ids are remembered per-student in localStorage, purely
+   client-side (the backend has no "read" tracking) — so a notice pops up
+   once per device/browser until the student dismisses it, then stays
+   available to re-read anytime from the Notices tab. ---------- */
+function dismissedNoticesKey() {
+  return `icreDismissedNotices_${state.currentUser.id}`;
+}
+function getDismissedNoticeIds() {
+  try {
+    const raw = localStorage.getItem(dismissedNoticesKey());
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) { return []; }
+}
+function markNoticeDismissed(id) {
+  try {
+    const ids = getDismissedNoticeIds();
+    if (ids.indexOf(id) === -1) {
+      ids.push(id);
+      localStorage.setItem(dismissedNoticesKey(), JSON.stringify(ids));
+    }
+  } catch (e) { /* localStorage unavailable — popup just won't be remembered as seen */ }
+}
+async function loadNotices() {
+  const res = await api("listNotices", { cls: state.currentUser.cls });
+  state.notices = res.ok ? res.notices : [];
+  state.noticesLoaded = true;
+
+  const dismissed = getDismissedNoticeIds();
+  // state.notices is newest-first from the server; queue oldest-first so
+  // a student catches up on announcements in the order they were posted.
+  state.noticeQueue = state.notices.filter((n) => dismissed.indexOf(n.id) === -1).slice().reverse();
+  state.activeNotice = state.noticeQueue.length ? state.noticeQueue[0] : null;
+}
+function handleDismissNotice(closeAll) {
+  if (!state.activeNotice) return;
+  if (closeAll) {
+    // The X always means "stop showing me these" — every queued notice is
+    // marked as seen so none of them pop up again, this session or later.
+    state.noticeQueue.forEach((n) => markNoticeDismissed(n.id));
+    state.noticeQueue = [];
+    state.activeNotice = null;
+  } else {
+    markNoticeDismissed(state.activeNotice.id);
+    state.noticeQueue = state.noticeQueue.slice(1);
+    state.activeNotice = state.noticeQueue.length ? state.noticeQueue[0] : null;
+  }
+  render();
+}
+
+function toast(text, kind) {
+  state.toast = { text, kind: kind || "ok" };
+  render();
+  setTimeout(() => { state.toast = null; render(); }, 2600);
+}
+
+/* ---------- shared bits ---------- */
+function seal(size, imgSize) {
+  return `<span class="seal" style="width:${size}px;height:${size}px"><img src="${LOGO}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" style="width:${imgSize}px;height:${imgSize}px"/><span class="fallback" style="display:none;position:absolute;font-size:${Math.round(imgSize*0.42)}px">IC</span></span>`;
+}
+function topbar(crumb, title) {
+  const user = state.currentUser;
+  let avatarBtn = "";
+  if (user) {
+    const initials = user.name.split(" ").map((s) => s[0]).slice(0, 2).join("").toUpperCase();
+    const avatarInner = user.photo ? `<img src="${user.photo}" alt="" />` : initials;
+    avatarBtn = `<button type="button" class="topbar-avatar" data-act="nav" data-key="profile" title="${escapeHtml(user.name)}" aria-label="My profile"><span class="avatar">${avatarInner}</span></button>`;
+  }
+  return `<div class="topbar"><div class="topbar-left"><button type="button" class="menu-btn" data-act="toggle-sidebar" aria-label="Open menu"><span></span></button><div><div class="crumb">${escapeHtml(crumb)}</div><h1>${escapeHtml(title)}</h1></div></div><div class="topbar-right"><span class="badge-dept">Computer Engineering &middot; Gargoti</span>${avatarBtn}</div></div>`;
+}
+function siteFooter() {
+  return `<footer class="site-footer"><span>&copy; ${new Date().getFullYear()} Institute of Civil and Rural Engineering, Gargoti &middot; Dept. of Computer Engineering</span><a href="${ADMIN_URL}">Staff &amp; Admin login &rarr;</a></footer>`;
+}
+
+/* =========================================================================
+   LOGIN SCREEN
+   ========================================================================= */
+function renderLogin() {
+  return `
+  <div class="auth-page">
+    <header class="site-header">
+      <div class="site-header-brand">${seal(52, 42)}<div class="name">Institute of Civil and Rural Engineering<span>Gargoti &middot; Computer Engineering</span></div></div>
+      <a class="corner-link" href="${ADMIN_URL}">Staff &amp; Admin &rarr;</a>
+    </header>
+    <div class="login-shell">
+      <div class="login-left">
+        <div class="login-hero">
+          <div class="eyebrow">Department of Computer Engineering</div>
+          <h1>Your student<br/>record, online.</h1>
+          <p>Register once and sign in here to manage your profile &mdash; contact details, address, guardian information and your photo ID &mdash; all kept in one place for the department.</p>
+        </div>
+        <div class="login-foot">
+          <span><b>1957</b>Founded</span>
+          <span><b>Computer</b>Engineering</span>
+          <span><b>1</b>Student Portal</span>
+        </div>
+      </div>
+      <div class="login-right">
+        <div class="login-card">
+          <h2>Sign in</h2>
+          <p class="sub">Use the email you registered with.</p>
+          ${state.loginError ? `<div class="login-error" role="alert">${escapeHtml(state.loginError)}</div>` : ""}
+          <form data-form="login">
+            <div class="field">
+              <label for="loginEmail">Email</label>
+              <input id="loginEmail" name="email" type="email" required autocomplete="username" placeholder="you@example.com" />
+            </div>
+            <div class="field">
+              <label for="loginPassword">Password</label>
+              <input id="loginPassword" name="password" type="password" required autocomplete="current-password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" />
+            </div>
+            <button type="submit" class="btn btn-primary" ${state.busy ? "disabled" : ""}>${state.busy ? "Signing in&hellip;" : "Enter student portal"}</button>
+          </form>
+          <p class="login-switch">${state.registrationOpen
+            ? `New student? <button type="button" class="link-btn" data-act="go-register">Register here</button>`
+            : `New-student registration is currently closed. Contact the department office for access.`}</p>
+          <div style="margin-top:18px;padding-top:18px;border-top:1px solid var(--line-soft)">
+            <p style="margin:0 0 10px;font-size:13px;color:var(--muted);text-align:center">Already graduated from this department?</p>
+            <button type="button" class="btn btn-ghost btn-block" data-act="go-passout" style="gap:8px">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+              Passout Student? Fill your details here
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    ${siteFooter()}
+  </div>`;
+}
+
+/* =========================================================================
+   PASSOUT STUDENT SCREEN
+   ========================================================================= */
+function renderPassout() {
+  const formOpen = state.passoutFormOpen;
+  return `
+  <div class="auth-page">
+    <header class="site-header">
+      <div class="site-header-brand">${seal(52, 42)}<div class="name">Institute of Civil and Rural Engineering<span>Gargoti &middot; Computer Engineering</span></div></div>
+      <a class="corner-link" href="${ADMIN_URL}">Staff &amp; Admin &rarr;</a>
+    </header>
+    <div class="login-shell">
+      <div class="login-left">
+        <div class="login-hero">
+          <div class="eyebrow">Passout Students</div>
+          <h1>Stay connected<br/>with your<br/>department.</h1>
+          <p>Fill in your current details so the department can keep track of alumni who have moved on to colleges or organisations after passing out from ICRE Gargoti.</p>
+        </div>
+        <div class="login-foot">
+          <span><b>1957</b>Founded</span>
+          <span><b>Alumni</b>Network</span>
+          <span><b>ICRE</b>Gargoti</span>
+        </div>
+      </div>
+      <div class="login-right">
+        <div class="login-card" style="max-width:460px">
+          <div style="display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--primary-dark),var(--primary));color:#fff;padding:6px 14px;border-radius:999px;font-size:11.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-bottom:14px">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            Passout Student Form
+          </div>
+          <h2 style="margin-top:0">Update your current status</h2>
+          ${state.passoutSuccess ? `
+          <div class="form-ok" style="text-align:center;padding:20px">
+            <div style="font-size:32px;margin-bottom:8px">🎓</div>
+            <div style="font-weight:700;font-size:16px;margin-bottom:6px">Details submitted successfully!</div>
+            <div style="font-size:13px;color:var(--success)">Thank you. The department office has received your information.</div>
+          </div>
+          <button type="button" class="btn btn-ghost btn-block" style="margin-top:12px" data-act="go-login">&larr; Back to login</button>
+          ` : !formOpen ? `
+          <p class="sub">The passout student form is currently closed by the department office.</p>
+          <div class="form-error">Passout form submissions are turned off right now. Please check back later or contact the department office.</div>
+          <p class="login-switch"><button type="button" class="link-btn" data-act="go-login">&larr; Back to login</button></p>
+          ` : `
+          <p class="sub">Fields marked <span class="req">*</span> are required.</p>
+          ${state.passoutError ? `<div class="login-error" role="alert">${escapeHtml(state.passoutError)}</div>` : ""}
+          <form data-form="passout">
+            <div class="field">
+              <label for="poName">Full name <span class="req">*</span></label>
+              <input id="poName" name="name" required placeholder="As per your certificate / marksheet" />
+            </div>
+            <div class="field">
+              <label for="poPhone">Contact number <span class="req">*</span></label>
+              <input id="poPhone" name="phone" type="tel" required placeholder="10-digit mobile number" />
+            </div>
+            <div class="field">
+              <label for="poGender">Gender <span class="req">*</span></label>
+              <select id="poGender" name="gender" required>
+                <option value="">Select&hellip;</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other / Prefer not to say</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="poOrg">Joined college / organisation name <span class="req">*</span></label>
+              <input id="poOrg" name="organization" required placeholder="e.g. XYZ Engineering College or ABC Pvt. Ltd." />
+            </div>
+            <div class="field">
+              <label for="poIdCard">College / organisation ID card photo <span class="req">*</span></label>
+              <label class="upload-zone" for="poIdCard">
+                <span class="upload-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4"/><path d="M6 10l6-6 6 6"/><path d="M4 20h16"/></svg></span>
+                <p style="margin:0 0 4px;font-weight:600;font-size:14px" id="poIdCardLabel">Click to choose a photo</p>
+                <p style="color:var(--muted);font-size:12px;margin:0">JPG or PNG, under 5&nbsp;MB</p>
+                <input id="poIdCard" name="idCard" type="file" accept="image/png,image/jpeg,image/jpg" required />
+              </label>
+            </div>
+            <button type="submit" class="btn btn-primary" ${state.busy ? "disabled" : ""}>${state.busy ? "Submitting&hellip;" : "Submit my details"}</button>
+          </form>
+          <p class="login-switch"><button type="button" class="link-btn" data-act="go-login">&larr; Back to login</button></p>
+          `}
+        </div>
+      </div>
+    </div>
+    ${siteFooter()}
+  </div>`;
+}
+
+/* =========================================================================
+   REGISTER SCREEN
+   ========================================================================= */
+function renderRegister() {
+  return `
+  <div class="auth-page">
+    <header class="site-header">
+      <div class="site-header-brand">${seal(52, 42)}<div class="name">Institute of Civil and Rural Engineering<span>Gargoti &middot; Computer Engineering</span></div></div>
+      <a class="corner-link" href="${ADMIN_URL}">Staff &amp; Admin &rarr;</a>
+    </header>
+    <div class="login-shell">
+      <div class="login-left">
+        <div class="login-hero">
+          <div class="eyebrow">Department of Computer Engineering</div>
+          <h1>Create your<br/>student account.</h1>
+          <p>Register once with your basic details. After signing in you'll fill in the rest of your profile &mdash; address, guardian details and your photo.</p>
+        </div>
+        <div class="login-foot">
+          <span><b>1957</b>Founded</span>
+          <span><b>03</b>Classes</span>
+          <span><b>Computer</b>Engineering</span>
+        </div>
+      </div>
+      <div class="login-right">
+        <div class="login-card" style="max-width:440px">
+          <h2>Student registration</h2>
+          ${!state.registrationOpen ? `
+          <p class="sub">New-student registration is currently closed by the department office.</p>
+          <div class="form-error">Registration is turned off right now. Please check back later or contact the department office if you need an account.</div>
+          <p class="login-switch">Already registered? <button type="button" class="link-btn" data-act="go-login">Sign in</button></p>
+          ` : `
+          <p class="sub">Fields marked <span class="req">*</span> are required.</p>
+          ${state.regError ? `<div class="login-error" role="alert">${escapeHtml(state.regError)}</div>` : ""}
+          <form data-form="register">
+            <div class="field">
+              <label for="regName">Full name <span class="req">*</span></label>
+              <input id="regName" name="name" required placeholder="As per your admission record" />
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="regEnrollment">Enrollment number <span class="req">*</span></label>
+                <input id="regEnrollment" name="enrollment" required placeholder="e.g. 24210370020" />
+              </div>
+              <div class="field">
+                <label for="regRollNumber">Roll number <span class="req">*</span></label>
+                <input id="regRollNumber" name="rollNumber" required placeholder="e.g. 21" />
+              </div>
+            </div>
+            <div class="field">
+              <label for="regClass">Class <span class="req">*</span></label>
+              <select id="regClass" name="cls" required>
+                <option value="">Select&hellip;</option>
+                <option value="FY">FY &mdash; First Year</option>
+                <option value="SY">SY &mdash; Second Year</option>
+                <option value="TY">TY &mdash; Third Year</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="regEmail">Email <span class="req">*</span></label>
+              <input id="regEmail" name="email" type="email" required placeholder="you@example.com" />
+              <span class="hint-sm">You'll use this to sign in.</span>
+            </div>
+            <div class="field">
+              <label for="regPhone">Phone number <span class="req">*</span></label>
+              <input id="regPhone" name="phone" type="tel" required placeholder="10-digit mobile number" />
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="regPassword">Password <span class="req">*</span></label>
+                <input id="regPassword" name="password" type="password" required placeholder="Min. 6 characters" />
+              </div>
+              <div class="field">
+                <label for="regConfirm">Confirm password <span class="req">*</span></label>
+                <input id="regConfirm" name="confirm" type="password" required placeholder="Re-enter password" />
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary" ${state.busy ? "disabled" : ""}>${state.busy ? "Creating account&hellip;" : "Create my account"}</button>
+          </form>
+          <p class="login-switch">Already registered? <button type="button" class="link-btn" data-act="go-login">Sign in</button></p>
+          `}
+        </div>
+      </div>
+    </div>
+    ${siteFooter()}
+  </div>`;
+}
+
+/* =========================================================================
+   PORTAL SHELL
+   ========================================================================= */
+function navFor(student) {
+  const items = [["overview", "Overview"], ["notices", "Notices"], ["profile", "My Profile"]];
+  if (student && student.cls !== "FY") items.push(["history", "Academic History"]);
+  items.push(["certificates", "Certificates"]);
+  items.push(["photo", "Photo & ID"]);
+  return items;
+}
+
+function sidebar() {
+  const user = state.currentUser;
+  if (!user) return "";
+  const items = navFor(user).map(([key, label]) =>
+    `<button class="nav-item${state.active === key ? " active" : ""}" data-act="nav" data-key="${key}">${label}</button>`
+  ).join("");
+  const initials = user.name.split(" ").map((s) => s[0]).slice(0, 2).join("").toUpperCase();
+  const photo = user.photo || null;
+  const avatarInner = photo ? `<img src="${photo}" alt="" />` : initials;
+
+  return `
+  <aside class="sidebar${state.sidebarOpen ? " open" : ""}">
+    <div class="sidebar-crest">
+      ${seal(56, 46)}
+      <div>
+        <div class="name">Institute of Civil &amp;<br/>Rural Engineering, Gargoti</div>
+        <div class="dept">Computer Engineering &middot; Student portal</div>
+      </div>
+    </div>
+    <div class="gear-line thin"></div>
+    <nav>${items}</nav>
+    <div class="sidebar-foot">
+      <div class="user-chip">
+        <span class="avatar">${avatarInner}</span>
+        <span class="who"><b>${escapeHtml(user.name)}</b><span>${escapeHtml(user.enrollment)}${user.rollNumber ? ` &middot; Roll ${escapeHtml(user.rollNumber)}` : ""}</span></span>
+      </div>
+      <button class="nav-item" style="color:#F0B3A8" data-act="logout">&larr; Sign out</button>
+    </div>
+  </aside>
+  <div class="sidebar-backdrop${state.sidebarOpen ? " show" : ""}" data-act="close-sidebar"></div>`;
+}
+
+/* =========================================================================
+   STUDENT SCREENS
+   ========================================================================= */
+function studentOverview(s) {
+  const pct = profileCompleteness(s);
+  const historyCard = s.cls === "FY"
+    ? `<div class="card card-pad stat"><span class="label">Academic Records</span><span class="num" style="font-size:22px">Not applicable</span><span class="delta" style="color:var(--muted)">First Year &mdash; records begin from Second Year</span></div>`
+    : `<div class="card card-pad stat"><span class="label">Academic Records</span><span class="num">0</span><span class="delta" style="color:var(--muted)">terms on file so far</span></div>`;
+
+  return topbar("Student Portal", `Welcome, ${escapeHtml(s.name.split(" ")[0])}`) + `
+    <div class="content">
+      <div class="grid grid-3" style="margin-bottom:24px">
+        <div class="card card-pad stat"><span class="label">Enrollment Number</span><span class="num" style="font-size:26px">${escapeHtml(s.enrollment)}</span><span class="delta">${DEPT_NAME}</span></div>
+        <div class="card card-pad stat"><span class="label">Roll Number</span><span class="num" style="font-size:26px">${s.rollNumber ? escapeHtml(s.rollNumber) : "&mdash;"}</span><span class="delta">${s.cls} &middot; ${CLASS_LABELS[s.cls]}</span></div>
+        ${historyCard}
+      </div>
+      <div class="card" style="margin-bottom:24px">
+        <div class="card-head"><h3>Profile completeness</h3><span class="pill ${pct === 100 ? "pill-green" : "pill-gold"}">${pct}% complete</span></div>
+        <div class="card-pad">
+          <p style="margin:0;color:var(--muted);font-size:13.5px">Your name, enrollment number, email, phone and class came from your registration. Please fill in the rest and add your photo so your record is complete for the department office.</p>
+        </div>
+      </div>
+      <div class="card"><div class="card-head"><h3>Quick actions</h3></div><div class="card-pad" style="display:flex;gap:14px;flex-wrap:wrap">
+        <button class="btn btn-ghost" data-act="nav" data-key="profile">Complete my profile</button>
+        ${s.cls !== "FY" ? `<button class="btn btn-ghost" data-act="nav" data-key="history">Academic history</button>` : ""}
+        <button class="btn btn-ghost" data-act="nav" data-key="certificates">Add a certificate</button>
+        <button class="btn btn-gold" data-act="nav" data-key="photo">Upload photo ID</button>
+      </div></div>
+    </div>`;
+}
+
+function studentProfile(s) {
+  const pct = profileCompleteness(s);
+  return topbar("Student Portal", "My Profile") + `
+    <div class="content">
+      <div class="card" style="margin-bottom:20px">
+        <div class="card-head"><h3>Profile completeness</h3><span class="pill ${pct === 100 ? "pill-green" : "pill-gold"}">${pct}% complete</span></div>
+        <div class="card-pad" style="padding-top:14px">
+          <div class="progress-track"><div class="progress-fill${pct === 100 ? " done" : ""}" style="width:${pct}%"></div></div>
+          <p style="margin:10px 0 0;color:var(--muted);font-size:12.5px">${pct === 100 ? "All set \u2014 your profile is fully filled in." : "Fill in the sections below and add your photo to reach 100%."}</p>
+        </div>
+      </div>
+      <div class="grid grid-2">
+        <div class="card">
+          <div class="card-head"><h3>From your registration</h3><span class="hint-sm" style="color:var(--muted);font-size:12px">Set when you registered &mdash; contact staff to change</span></div>
+          <div class="card-pad">
+            <div class="field"><label>Full name</label><input value="${escapeHtml(s.name)}" disabled /></div>
+            <div class="field"><label>Enrollment number</label><input value="${escapeHtml(s.enrollment)}" disabled /></div>
+            <div class="field"><label>Email</label><input value="${escapeHtml(s.email)}" disabled /></div>
+            <div class="field"><label>Class</label><input value="${s.cls} &middot; ${CLASS_LABELS[s.cls]}" disabled /></div>
+            <div class="field"><label>Department</label><input value="${DEPT_NAME}" disabled /></div>
+          </div>
+        </div>
+
+        <form data-form="profile" class="card">
+          <div class="card-head"><h3>Contact &amp; personal details</h3><span class="hint-sm" style="color:var(--muted);font-size:12px">You keep these up to date</span></div>
+          <div class="card-pad">
+            ${sectionState("profile") === "none" ? `<div class="form-error">This section has been turned off by the administrator. Contact the department office if you need to update these details.</div>`
+              : sectionState("profile") === "some" ? `<div class="form-ok" style="background:var(--bg-soft);color:var(--muted)">Some fields below are currently locked by the administrator.</div>` : ""}
+            <div class="field"><label>Roll number${!fieldOn("rollNumber") ? lockPill() : ""}</label><input name="rollNumber" value="${escapeHtml(s.rollNumber || "")}" placeholder="e.g. 21" ${!fieldOn("rollNumber") ? "disabled" : ""} /></div>
+            <div class="field"><label>Phone${!fieldOn("phone") ? lockPill() : ""}</label><input name="phone" type="tel" value="${escapeHtml(s.phone || "")}" ${!fieldOn("phone") ? "disabled" : ""} /></div>
+            <div class="field-row">
+              <div class="field"><label>Date of birth${!fieldOn("dob") ? lockPill() : ""}</label><input name="dob" type="date" value="${escapeHtml(s.dob || "")}" ${!fieldOn("dob") ? "disabled" : ""} /></div>
+              <div class="field"><label>Gender${!fieldOn("gender") ? lockPill() : ""}</label>
+                <select name="gender" ${!fieldOn("gender") ? "disabled" : ""}>
+                  <option value="" ${!s.gender ? "selected" : ""}>Select&hellip;</option>
+                  <option value="Female" ${s.gender === "Female" ? "selected" : ""}>Female</option>
+                  <option value="Male" ${s.gender === "Male" ? "selected" : ""}>Male</option>
+                  <option value="Other" ${s.gender === "Other" ? "selected" : ""}>Other</option>
+                </select>
+              </div>
+            </div>
+            <div class="field"><label>Blood group${!fieldOn("bloodGroup") ? lockPill() : ""}</label>
+              <select name="bloodGroup" ${!fieldOn("bloodGroup") ? "disabled" : ""}>
+                <option value="" ${!s.bloodGroup ? "selected" : ""}>Select&hellip;</option>
+                ${BLOOD_GROUPS.map((bg) => `<option value="${bg}" ${s.bloodGroup === bg ? "selected" : ""}>${bg}</option>`).join("")}
+              </select>
+            </div>
+            ${s.cls === "FY"
+              ? `<div class="field"><label>SSC / 10th marks (%)${!fieldOn("sscMarks") ? lockPill() : ""}</label><input name="sscMarks" type="number" min="0" max="100" step="0.01" placeholder="e.g. 87.40" value="${escapeHtml(s.sscMarks || "")}" ${!fieldOn("sscMarks") ? "disabled" : ""} /></div>`
+              : `<div class="field-row">
+                  <div class="field"><label>Previous semester${!fieldOn("semester") ? lockPill() : ""}</label>
+                    <select name="semester" ${!fieldOn("semester") ? "disabled" : ""}>
+                      <option value="" ${!s.semester ? "selected" : ""}>Select&hellip;</option>
+                      ${[1, 2, 3, 4, 5, 6].map((n) => `<option value="${n}" ${String(s.semester || "") === String(n) ? "selected" : ""}>Semester ${n}</option>`).join("")}
+                    </select>
+                  </div>
+                  <div class="field"><label>Previous semester marks (%)${!fieldOn("semMarks") ? lockPill() : ""}</label><input name="semMarks" type="number" min="0" max="100" step="0.01" placeholder="e.g. 78.20" value="${escapeHtml(s.semMarks || "")}" ${!fieldOn("semMarks") ? "disabled" : ""} /></div>
+                </div>`}
+            <button type="submit" class="btn btn-gold btn-block" ${state.busy || sectionState("profile") === "none" ? "disabled" : ""}>Save contact &amp; personal details</button>
+          </div>
+        </form>
+
+        <form data-form="address" class="card">
+          <div class="card-head"><h3>Living Address</h3><span class="hint-sm" style="color:var(--muted);font-size:12px">Where you currently live</span></div>
+          <div class="card-pad">
+            ${sectionState("address") === "none" ? `<div class="form-error">This section has been turned off by the administrator. Contact the department office if you need to update your address.</div>`
+              : sectionState("address") === "some" ? `<div class="form-ok" style="background:var(--bg-soft);color:var(--muted)">Some fields below are currently locked by the administrator.</div>` : ""}
+            <div class="field"><label>Address line 1${!fieldOn("addr1") ? lockPill() : ""}</label><input name="addr1" value="${escapeHtml(s.addr1 || "")}" ${!fieldOn("addr1") ? "disabled" : ""} /></div>
+            <div class="field"><label>Address line 2${!fieldOn("addr2") ? lockPill() : ""}</label><input name="addr2" value="${escapeHtml(s.addr2 || "")}" ${!fieldOn("addr2") ? "disabled" : ""} /></div>
+            <div class="field-row">
+              <div class="field"><label>City / District${!fieldOn("city") ? lockPill() : ""}</label><input name="city" value="${escapeHtml(s.city || "")}" ${!fieldOn("city") ? "disabled" : ""} /></div>
+              <div class="field"><label>State${!fieldOn("state") ? lockPill() : ""}</label><input name="state" value="${escapeHtml(s.state || "")}" ${!fieldOn("state") ? "disabled" : ""} /></div>
+            </div>
+            <div class="field"><label>PIN code${!fieldOn("pincode") ? lockPill() : ""}</label><input name="pincode" value="${escapeHtml(s.pincode || "")}" ${!fieldOn("pincode") ? "disabled" : ""} /></div>
+            <button type="submit" class="btn btn-ghost btn-block" ${state.busy || sectionState("address") === "none" ? "disabled" : ""}>Save living address</button>
+          </div>
+        </form>
+
+        <form data-form="guardianAddress" class="card">
+          <div class="card-head"><h3>Guardian Address</h3><span class="hint-sm" style="color:var(--muted);font-size:12px">Your parent / guardian's home address</span></div>
+          <div class="card-pad">
+            ${sectionState("guardianAddress") === "none" ? `<div class="form-error">This section has been turned off by the administrator. Contact the department office if you need to update the guardian address.</div>`
+              : sectionState("guardianAddress") === "some" ? `<div class="form-ok" style="background:var(--bg-soft);color:var(--muted)">Some fields below are currently locked by the administrator.</div>` : ""}
+            <div class="field"><label>Address line 1${!fieldOn("gAddr1") ? lockPill() : ""}</label><input name="gAddr1" value="${escapeHtml(s.gAddr1 || "")}" ${!fieldOn("gAddr1") ? "disabled" : ""} /></div>
+            <div class="field"><label>Address line 2${!fieldOn("gAddr2") ? lockPill() : ""}</label><input name="gAddr2" value="${escapeHtml(s.gAddr2 || "")}" ${!fieldOn("gAddr2") ? "disabled" : ""} /></div>
+            <div class="field-row">
+              <div class="field"><label>City / District${!fieldOn("gCity") ? lockPill() : ""}</label><input name="gCity" value="${escapeHtml(s.gCity || "")}" ${!fieldOn("gCity") ? "disabled" : ""} /></div>
+              <div class="field"><label>State${!fieldOn("gState") ? lockPill() : ""}</label><input name="gState" value="${escapeHtml(s.gState || "")}" ${!fieldOn("gState") ? "disabled" : ""} /></div>
+            </div>
+            <div class="field"><label>PIN code${!fieldOn("gPincode") ? lockPill() : ""}</label><input name="gPincode" value="${escapeHtml(s.gPincode || "")}" ${!fieldOn("gPincode") ? "disabled" : ""} /></div>
+            <button type="submit" class="btn btn-ghost btn-block" ${state.busy || sectionState("guardianAddress") === "none" ? "disabled" : ""}>Save guardian address</button>
+          </div>
+        </form>
+
+        <form data-form="guardian" class="card">
+          <div class="card-head"><h3>Parent / Guardian</h3></div>
+          <div class="card-pad">
+            ${sectionState("guardian") === "none" ? `<div class="form-error">This section has been turned off by the administrator. Contact the department office if you need to update guardian details.</div>`
+              : sectionState("guardian") === "some" ? `<div class="form-ok" style="background:var(--bg-soft);color:var(--muted)">Some fields below are currently locked by the administrator.</div>` : ""}
+            <div class="field"><label>Name${!fieldOn("guardianName") ? lockPill() : ""}</label><input name="guardianName" value="${escapeHtml(s.guardianName || "")}" ${!fieldOn("guardianName") ? "disabled" : ""} /></div>
+            <div class="field-row">
+              <div class="field"><label>Relation${!fieldOn("guardianRelation") ? lockPill() : ""}</label><input name="guardianRelation" value="${escapeHtml(s.guardianRelation || "")}" placeholder="e.g. Father" ${!fieldOn("guardianRelation") ? "disabled" : ""} /></div>
+              <div class="field"><label>Phone${!fieldOn("guardianPhone") ? lockPill() : ""}</label><input name="guardianPhone" type="tel" value="${escapeHtml(s.guardianPhone || "")}" ${!fieldOn("guardianPhone") ? "disabled" : ""} /></div>
+            </div>
+            <div class="field"><label>Occupation${!fieldOn("guardianOccupation") ? lockPill() : ""}</label><input name="guardianOccupation" value="${escapeHtml(s.guardianOccupation || "")}" ${!fieldOn("guardianOccupation") ? "disabled" : ""} /></div>
+            <button type="submit" class="btn btn-ghost btn-block" ${state.busy || sectionState("guardian") === "none" ? "disabled" : ""}>Save guardian details</button>
+          </div>
+        </form>
+      </div>
+    </div>`;
+}
+
+function studentHistory(s) {
+  if (s.cls === "FY") {
+    return topbar("Student Portal", "Academic History") + `
+      <div class="content"><div class="card"><div class="empty-state">Academic history is not applicable for First Year students yet. It will begin once your Second Year results are published.</div></div></div>`;
+  }
+  return topbar("Student Portal", "Academic History") + `
+    <div class="content"><div class="card">
+      <div class="card-head"><h3>Term-by-term record</h3></div>
+      <div class="empty-state">No academic records on file yet. Results will appear here once published by the department office.</div>
+    </div></div>`;
+}
+
+function studentPhoto(s) {
+  const photo = s.photo || null;
+  const photoOn = fieldOn("photo");
+  return topbar("Student Portal", "Photo & ID") + `
+    <div class="content"><div class="grid grid-2">
+      <div class="card"><div class="card-head"><h3>Current photo</h3></div><div class="card-pad" style="display:flex;gap:20px;align-items:center">
+        <div class="photo-frame">${photo ? `<img src="${photo}" alt="Your current photo"/>` : "No photo"}</div>
+        <div><p style="color:var(--muted);font-size:13px;margin-bottom:10px">This photo appears on your ID card and is visible to the department office in the admin panel.</p>
+        <span class="pill ${photo ? "pill-green" : "pill-gray"}">${photo ? "Uploaded" : "Not uploaded"}</span></div>
+      </div></div>
+      <form data-form="photo" class="card"><div class="card-head"><h3>Upload a new photo${!photoOn ? lockPill() : ""}</h3></div><div class="card-pad">
+        ${!photoOn ? `<div class="form-error">Photo upload has been turned off by the administrator. Contact the department office if you need to update your photo.</div>` : ""}
+        <label class="upload-zone${!photoOn ? " disabled" : ""}" for="photoInput" style="${!photoOn ? "opacity:.55;cursor:not-allowed" : ""}">
+          <span class="upload-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4"/><path d="M6 10l6-6 6 6"/><path d="M4 20h16"/></svg></span>
+          <p style="margin:0 0 4px;font-weight:600;font-size:14px" id="photoZoneLabel">${photoOn ? "Click to choose a photo" : "Uploading is turned off"}</p>
+          <p style="color:var(--muted);font-size:12px;margin:0">JPG or PNG, under 3&nbsp;MB, plain background recommended</p>
+          <input id="photoInput" name="photo" type="file" accept="image/png,image/jpeg" ${!photoOn ? "disabled" : ""} />
+        </label>
+        <button type="submit" class="btn btn-gold btn-block" style="margin-top:16px" ${state.busy || !photoOn ? "disabled" : ""}>Save photo</button>
+      </div></form>
+    </div></div>`;
+}
+
+function certificatePill(status) {
+  const isPrize = status && status !== "Participation" && status !== "Other";
+  return `<span class="pill ${isPrize ? "pill-gold" : "pill-gray"}">${escapeHtml(status || "—")}</span>`;
+}
+
+function studentCertificates(s) {
+  const list = state.certificates || [];
+  const rows = !state.certificatesLoaded
+    ? `<div class="spinner-line">Loading your certificates&hellip;</div>`
+    : list.length === 0
+    ? `<div class="empty-state">No certificates uploaded yet. Add your first one using the form.</div>`
+    : list.map((c) => `
+        <div class="card-pad" style="border-top:1px solid var(--line-soft);display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap">
+          <div style="min-width:0">
+            <div style="font-weight:700;font-size:14px;margin-bottom:4px">${escapeHtml(c.eventName)}</div>
+            <div style="color:var(--muted);font-size:12.5px;line-height:1.6">
+              ${escapeHtml(c.organizingInstitute)}<br/>
+              Academic year ${escapeHtml(c.academicYear)}
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex:none">
+            ${certificatePill(c.status)}
+            ${c.fileUrl ? `<a class="btn btn-ghost" style="padding:6px 12px;font-size:12.5px" href="${c.fileUrl}" target="_blank" rel="noopener">View</a>` : ""}
+            <button type="button" class="btn btn-ghost" style="padding:6px 12px;font-size:12.5px;color:var(--danger)" data-act="delete-cert" data-id="${c.id}">Delete</button>
+          </div>
+        </div>`).join("");
+
+  return topbar("Student Portal", "Certificates") + `
+    <div class="content"><div class="grid grid-2">
+      <div class="card">
+        <div class="card-head"><h3>Your certificates</h3><span class="pill pill-gray">${list.length}</span></div>
+        ${rows}
+      </div>
+
+      <form data-form="certificate" class="card">
+        <div class="card-head"><h3>Add a certificate</h3></div>
+        <div class="card-pad">
+          <div class="field"><label>Academic year <span class="req">*</span></label><input name="academicYear" placeholder="e.g. 2024-25" required /></div>
+          <div class="field"><label>Organizing institute <span class="req">*</span></label><input name="organizingInstitute" placeholder="e.g. XYZ College of Engineering" required /></div>
+          <div class="field"><label>Event name <span class="req">*</span></label><input name="eventName" placeholder="e.g. National Level Hackathon" required /></div>
+          <div class="field"><label>Status <span class="req">*</span></label>
+            <select name="status" required>
+              <option value="" selected disabled>Select&hellip;</option>
+              ${CERTIFICATE_STATUSES.map((st) => `<option value="${st}">${st}</option>`).join("")}
+            </select>
+          </div>
+          <div class="field">
+            <label>Certificate file <span class="req">*</span></label>
+            <label class="upload-zone" for="certificateInput">
+              <span class="upload-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4"/><path d="M6 10l6-6 6 6"/><path d="M4 20h16"/></svg></span>
+              <p style="margin:0 0 4px;font-weight:600;font-size:14px" id="certificateZoneLabel">Click to choose a file</p>
+              <p style="color:var(--muted);font-size:12px;margin:0">JPG, PNG or PDF, under 5&nbsp;MB</p>
+              <input id="certificateInput" name="certificate" type="file" accept="image/png,image/jpeg,application/pdf" required />
+            </label>
+          </div>
+          <button type="submit" class="btn btn-gold btn-block" ${state.busy ? "disabled" : ""}>Save certificate</button>
+        </div>
+      </form>
+    </div></div>`;
+}
+
+function studentNotices(s) {
+  const list = state.notices || [];
+  const targetLabel = (t) => (!t || t === "ALL") ? "All classes" : `${t} \u00b7 ${CLASS_LABELS[t] || t}`;
+
+  const rows = !state.noticesLoaded
+    ? `<div class="spinner-line">Loading notices&hellip;</div>`
+    : list.length === 0
+    ? `<div class="empty-state">No notices yet. Anything the department posts for ${s.cls} will show up here.</div>`
+    : list.map((n) => `
+        <div class="card-pad" style="border-top:1px solid var(--line-soft)">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px">
+            <span style="font-weight:700;font-size:14.5px">${escapeHtml(n.title)}</span>
+            <span class="pill pill-indigo">${escapeHtml(targetLabel(n.targetClass))}</span>
+          </div>
+          <div style="font-size:13.5px;line-height:1.6;white-space:pre-wrap;margin-bottom:6px">${escapeHtml(n.body)}</div>
+          <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted)">${escapeHtml(n.postedBy || "Admin")} &middot; ${escapeHtml(fmtDateTime(n.postedAt))}</div>
+        </div>`).join("");
+
+  return topbar("Student Portal", "Notices") + `
+    <div class="content"><div class="card">
+      <div class="card-head"><h3>Department notices</h3>${list.length ? `<span class="pill pill-gray">${list.length}</span>` : ""}</div>
+      ${rows}
+    </div></div>`;
+}
+
+function studentContent(s) {
+  const a = state.active;
+  if (a === "profile") return studentProfile(s);
+  if (a === "history") return studentHistory(s);
+  if (a === "notices") return studentNotices(s);
+  if (a === "certificates") return studentCertificates(s);
+  if (a === "photo") return studentPhoto(s);
+  return studentOverview(s);
+}
+
+/* =========================================================================
+   MAIN RENDER
+   ========================================================================= */
+function renderPortal() {
+  const user = state.currentUser;
+  if (!user) return `<div class="content"><div class="spinner-line">Loading your account&hellip;</div></div>`;
+  return `<div class="shell">${sidebar()}<div class="main">${studentContent(user)}${siteFooter()}</div></div>`;
+}
+
+function noticePopup() {
+  const n = state.activeNotice;
+  if (!n) return "";
+  const targetLabel = (!n.targetClass || n.targetClass === "ALL") ? "All classes" : `${n.targetClass} \u00b7 ${CLASS_LABELS[n.targetClass] || n.targetClass}`;
+  const total = state.noticeQueue.length;
+  const remaining = total - 1;
+  const dots = total > 1
+    ? `<div class="notice-modal-dots">${state.noticeQueue.map((_, i) => `<span class="${i === 0 ? "on" : ""}"></span>`).join("")}</div>`
+    : "";
+  return `
+  <div class="notice-overlay">
+    <div class="notice-modal">
+      <div class="notice-modal-band"></div>
+      <div class="notice-modal-head">
+        <span class="notice-modal-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        </span>
+        <div class="notice-modal-title">
+          <span class="notice-modal-tag">${escapeHtml(targetLabel)}</span>
+          <h3>${escapeHtml(n.title)}</h3>
+        </div>
+        <button type="button" class="notice-modal-close" data-act="dismiss-notice-all" aria-label="Close">&times;</button>
+      </div>
+      ${dots}
+      <div class="notice-modal-body">${escapeHtml(n.body)}</div>
+      <div class="notice-modal-meta">${escapeHtml(n.postedBy || "Admin")} &middot; ${escapeHtml(fmtDateTime(n.postedAt))}</div>
+      <div class="notice-modal-foot">
+        <span class="n-progress">${remaining > 0 ? `${remaining} more notice${remaining === 1 ? "" : "s"} after this` : "You're all caught up"}</span>
+        <button type="button" class="btn btn-primary" data-act="dismiss-notice">${remaining > 0 ? "Got it, next" : "Got it"}</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function congratsPopup() {
+  if (!state.showCongrats || !state.currentUser) return "";
+  const firstName = escapeHtml(state.currentUser.name.split(" ")[0]);
+  return `
+  <div class="congrats-overlay">
+    <div class="congrats-modal">
+      <div class="congrats-icon">🎉</div>
+      <h3>Congratulations, ${firstName}!</h3>
+      <p>Your profile is now 100% complete. The department office has everything it needs on file for you.</p>
+      <button type="button" class="btn btn-primary" style="width:auto;padding:10px 26px" data-act="dismiss-congrats">Great, thanks!</button>
+    </div>
+  </div>`;
+}
+
+function render() {
+  let html = "";
+  if (state.screen === "login") html += renderLogin();
+  else if (state.screen === "register") html += renderRegister();
+  else if (state.screen === "passout") html += renderPassout();
+  else html += renderPortal();
+
+  if (state.toast) {
+    html += `<div class="toast ${state.toast.kind === "err" ? "err" : ""}" role="status">${escapeHtml(state.toast.text)}</div>`;
+  }
+  if (state.screen === "portal") {
+    html += state.showCongrats ? congratsPopup() : noticePopup();
+  }
+  root.innerHTML = html;
+
+  const photoInput = document.getElementById("photoInput");
+  if (photoInput) {
+    photoInput.addEventListener("change", () => {
+      const lbl = document.getElementById("photoZoneLabel");
+      if (lbl) lbl.textContent = photoInput.files[0] ? photoInput.files[0].name : "Click to choose a photo";
+    });
+  }
+
+  const certificateInput = document.getElementById("certificateInput");
+  if (certificateInput) {
+    certificateInput.addEventListener("change", () => {
+      const lbl = document.getElementById("certificateZoneLabel");
+      if (lbl) lbl.textContent = certificateInput.files[0] ? certificateInput.files[0].name : "Click to choose a file";
+    });
+  }
+
+  const poIdCard = document.getElementById("poIdCard");
+  if (poIdCard) {
+    poIdCard.addEventListener("change", () => {
+      const lbl = document.getElementById("poIdCardLabel");
+      if (lbl) lbl.textContent = poIdCard.files[0] ? poIdCard.files[0].name : "Click to choose a photo";
+    });
+  }
+}
+
+/* =========================================================================
+   FORM SUBMIT HANDLERS
+   ========================================================================= */
+async function handleLoginSubmit(form) {
+  const email = form.get("email").trim();
+  const password = form.get("password");
+  state.loginError = "";
+  state.busy = true; render();
+
+  const res = await api("login", { email, password });
+  state.busy = false;
+  if (!res.ok) { state.loginError = res.error || "Sign in failed."; return render(); }
+
+  state.session = { id: res.student.id };
+  state.currentUser = res.student;
+  state.screen = "portal"; state.active = "overview";
+  render();
+
+  await loadFieldSettings();
+  await loadNotices();
+  render();
+}
+
+async function handleRegisterSubmit(form) {
+  const name = form.get("name").trim();
+  const enrollment = form.get("enrollment").trim();
+  const rollNumber = form.get("rollNumber").trim();
+  const cls = form.get("cls");
+  const email = form.get("email").trim();
+  const phone = form.get("phone").trim();
+  const password = form.get("password");
+  const confirm = form.get("confirm");
+
+  state.regError = "";
+  if (!state.registrationOpen) { state.regError = "Registration is currently closed by the department office."; return render(); }
+  if (!name || !enrollment || !rollNumber || !cls || !email || !phone || !password || !confirm) { state.regError = "Please fill in every field."; return render(); }
+  if (CLASS_ORDER.indexOf(cls) === -1) { state.regError = "Please select a valid class."; return render(); }
+  if (!/^\d{10}$/.test(phone.replace(/\D/g, ""))) { state.regError = "Please enter a valid 10-digit phone number."; return render(); }
+  if (password.length < 6) { state.regError = "Password must be at least 6 characters."; return render(); }
+  if (password !== confirm) { state.regError = "Passwords do not match."; return render(); }
+
+  state.busy = true; render();
+  const res = await api("register", { name, enrollment, rollNumber, cls, email, phone, password });
+  state.busy = false;
+  if (!res.ok) { state.regError = res.error || "Registration failed."; return render(); }
+
+  state.session = { id: res.student.id };
+  state.currentUser = res.student;
+  state.screen = "portal"; state.active = "overview";
+  toast(`Welcome, ${name.split(" ")[0]}! Your account is ready.`);
+  render();
+
+  await loadFieldSettings();
+  await loadNotices();
+  render();
+}
+
+// If the server silently dropped a field because the admin had locked it
+// between page-load and submit, say so instead of pretending everything saved.
+function blockedFieldsNote(res) {
+  if (!res.blockedFields || !res.blockedFields.length) return "";
+  return ` (${res.blockedFields.length === 1 ? "1 field is" : res.blockedFields.length + " fields are"} locked by the admin and wasn't saved)`;
+}
+
+async function handleProfileSubmit(form) {
+  const updates = {
+    rollNumber: form.get("rollNumber").trim(),
+    phone: form.get("phone").trim(), dob: form.get("dob"), gender: form.get("gender"), bloodGroup: form.get("bloodGroup").trim(),
+  };
+  if (state.currentUser.cls === "FY") updates.sscMarks = form.get("sscMarks").trim();
+  else { updates.semester = form.get("semester").trim(); updates.semMarks = form.get("semMarks").trim(); }
+  const prevStudent = state.currentUser;
+  state.busy = true; render();
+  const res = await api("updateStudent", { id: state.currentUser.id, updates });
+  state.busy = false;
+  if (!res.ok) { toast(res.error || "Could not save.", "err"); return render(); }
+  state.currentUser = res.student;
+  maybeCelebrateCompletion(prevStudent);
+  toast(`Contact & personal details saved.${blockedFieldsNote(res)}`);
+  render();
+}
+
+async function handleAddressSubmit(form) {
+  const updates = {
+    addr1: form.get("addr1").trim(), addr2: form.get("addr2").trim(), city: form.get("city").trim(), state: form.get("state").trim(), pincode: form.get("pincode").trim(),
+  };
+  const prevStudent = state.currentUser;
+  state.busy = true; render();
+  const res = await api("updateStudent", { id: state.currentUser.id, updates });
+  state.busy = false;
+  if (!res.ok) { toast(res.error || "Could not save.", "err"); return render(); }
+  state.currentUser = res.student;
+  maybeCelebrateCompletion(prevStudent);
+  toast(`Address saved.${blockedFieldsNote(res)}`);
+  render();
+}
+
+async function handleGuardianAddressSubmit(form) {
+  const updates = {
+    gAddr1: form.get("gAddr1").trim(), gAddr2: form.get("gAddr2").trim(), gCity: form.get("gCity").trim(), gState: form.get("gState").trim(), gPincode: form.get("gPincode").trim(),
+  };
+  const prevStudent = state.currentUser;
+  state.busy = true; render();
+  const res = await api("updateStudent", { id: state.currentUser.id, updates });
+  state.busy = false;
+  if (!res.ok) { toast(res.error || "Could not save.", "err"); return render(); }
+  state.currentUser = res.student;
+  maybeCelebrateCompletion(prevStudent);
+  toast(`Guardian address saved.${blockedFieldsNote(res)}`);
+  render();
+}
+
+async function handleGuardianSubmit(form) {
+  const updates = {
+    guardianName: form.get("guardianName").trim(), guardianRelation: form.get("guardianRelation").trim(),
+    guardianPhone: form.get("guardianPhone").trim(), guardianOccupation: form.get("guardianOccupation").trim(),
+  };
+  const prevStudent = state.currentUser;
+  state.busy = true; render();
+  const res = await api("updateStudent", { id: state.currentUser.id, updates });
+  state.busy = false;
+  if (!res.ok) { toast(res.error || "Could not save.", "err"); return render(); }
+  state.currentUser = res.student;
+  maybeCelebrateCompletion(prevStudent);
+  toast(`Guardian details saved.${blockedFieldsNote(res)}`);
+  render();
+}
+
+async function handlePhotoSubmit(formEl) {
+  const input = formEl.querySelector('input[type="file"]');
+  const file = input && input.files[0];
+  if (!file) { toast("Please choose a photo first.", "err"); return; }
+  if (file.size > 3 * 1024 * 1024) { toast("Photo is too large (max 3 MB).", "err"); return; }
+
+  const prevStudent = state.currentUser;
+  state.busy = true; render();
+  try {
+    const blob = await compressPhoto(file, 480, 600, 0.82);
+    const photoUrl = await uploadPhotoToCloudinary(blob);
+    const res = await api("updateStudent", { id: state.currentUser.id, updates: { photo: photoUrl } });
+    state.busy = false;
+    if (!res.ok) { toast(res.error || "Could not save photo.", "err"); return render(); }
+    state.currentUser = res.student;
+    maybeCelebrateCompletion(prevStudent);
+    toast("Photo saved — it's now visible on your ID and in the admin panel.");
+  } catch (err) {
+    state.busy = false;
+    toast(err.message || "Could not process that image. Please try a different photo.", "err");
+  }
+  render();
+}
+
+async function handleCertificateSubmit(formEl) {
+  const fd = new FormData(formEl);
+  const academicYear = String(fd.get("academicYear") || "").trim();
+  const organizingInstitute = String(fd.get("organizingInstitute") || "").trim();
+  const eventName = String(fd.get("eventName") || "").trim();
+  const status = String(fd.get("status") || "").trim();
+  const input = formEl.querySelector('input[type="file"]');
+  const file = input && input.files[0];
+
+  if (!academicYear || !organizingInstitute || !eventName || !status) { toast("Please fill in every field.", "err"); return; }
+  if (!file) { toast("Please choose a certificate file first.", "err"); return; }
+  if (file.size > 5 * 1024 * 1024) { toast("File is too large (max 5 MB).", "err"); return; }
+
+  state.busy = true; render();
+  try {
+    const fileUrl = await uploadCertificateFile(file);
+    const res = await api("addCertificate", {
+      studentId: state.currentUser.id, academicYear, organizingInstitute, eventName, status, fileUrl,
+    });
+    state.busy = false;
+    if (!res.ok) { toast(res.error || "Could not save certificate.", "err"); return render(); }
+    state.certificates = [res.certificate, ...(state.certificates || [])];
+    toast("Certificate saved.");
+  } catch (err) {
+    state.busy = false;
+    toast(err.message || "Could not process that file. Please try again.", "err");
+  }
+  render();
+}
+
+async function handleDeleteCertificate(id) {
+  if (!confirm("Delete this certificate? This can't be undone.")) return;
+  state.busy = true; render();
+  const res = await api("deleteCertificate", { id, studentId: state.currentUser.id });
+  state.busy = false;
+  if (!res.ok) { toast(res.error || "Could not delete certificate.", "err"); return render(); }
+  state.certificates = (state.certificates || []).filter((c) => c.id !== id);
+  toast("Certificate deleted.");
+  render();
+}
+
+async function handlePassoutSubmit(formEl) {
+  const fd = new FormData(formEl);
+  const name = String(fd.get("name") || "").trim();
+  const phone = String(fd.get("phone") || "").trim();
+  const gender = String(fd.get("gender") || "").trim();
+  const organization = String(fd.get("organization") || "").trim();
+  const idCardFile = formEl.querySelector('input[name="idCard"]');
+  const file = idCardFile && idCardFile.files[0];
+
+  state.passoutError = "";
+  if (!name || !phone || !gender || !organization) { state.passoutError = "Please fill in every required field."; return render(); }
+  if (!/^\d{10}$/.test(phone.replace(/\D/g, ""))) { state.passoutError = "Please enter a valid 10-digit phone number."; return render(); }
+  if (!file) { state.passoutError = "Please upload your college / organisation ID card photo."; return render(); }
+  if (file.size > 5 * 1024 * 1024) { state.passoutError = "ID card photo is too large (max 5 MB)."; return render(); }
+
+  state.busy = true; render();
+  try {
+    // Upload the ID card photo to Cloudinary using the same image upload URL
+    const form = new FormData();
+    form.append("file", file);
+    form.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+    const upRes = await fetch(CLOUDINARY_UPLOAD_URL, { method: "POST", body: form });
+    if (!upRes.ok) throw new Error("ID card upload failed. Please try again.");
+    const upData = await upRes.json();
+    if (!upData.secure_url) throw new Error("ID card upload failed. Please try again.");
+    const idCardUrl = upData.secure_url;
+
+    const res = await api("addPassoutStudent", { name, phone, gender, organization, idCardUrl });
+    state.busy = false;
+    if (!res.ok) { state.passoutError = res.error || "Submission failed. Please try again."; return render(); }
+    state.passoutSuccess = true;
+  } catch (err) {
+    state.busy = false;
+    state.passoutError = err.message || "Could not process your submission. Please try again.";
+  }
+  render();
+}
+
+/* =========================================================================
+   EVENT DELEGATION
+   ========================================================================= */
+root.addEventListener("submit", (e) => {
+  const formEl = e.target.closest("form[data-form]");
+  if (!formEl) return;
+  e.preventDefault();
+  const kind = formEl.dataset.form;
+  const fd = new FormData(formEl);
+  const get = (k) => (fd.get(k) == null ? "" : String(fd.get(k)));
+  const form = { get };
+
+  if (kind === "login") return handleLoginSubmit(form);
+  if (kind === "register") return handleRegisterSubmit(form);
+  if (kind === "passout") return handlePassoutSubmit(formEl);
+  if (kind === "profile") return handleProfileSubmit(form);
+  if (kind === "address") return handleAddressSubmit(form);
+  if (kind === "guardianAddress") return handleGuardianAddressSubmit(form);
+  if (kind === "guardian") return handleGuardianSubmit(form);
+  if (kind === "photo") return handlePhotoSubmit(formEl);
+  if (kind === "certificate") return handleCertificateSubmit(formEl);
+});
+
+root.addEventListener("click", (e) => {
+  const el = e.target.closest("[data-act]");
+  if (!el) return;
+  const act = el.dataset.act;
+
+  if (act === "go-register") { state.screen = "register"; state.regError = ""; render(); }
+  else if (act === "go-passout") { state.screen = "passout"; state.passoutError = ""; state.passoutSuccess = false; render(); }
+  else if (act === "go-login") { state.screen = "login"; state.loginError = ""; render(); }
+  else if (act === "nav") {
+    state.active = el.dataset.key; state.sidebarOpen = false; render();
+    if (el.dataset.key === "certificates" && !state.certificatesLoaded) loadCertificates().then(render);
+  }
+  else if (act === "logout") { state.session = null; state.currentUser = null; state.screen = "login"; state.active = "overview"; state.sidebarOpen = false; state.certificates = []; state.certificatesLoaded = false; state.notices = []; state.noticesLoaded = false; state.noticeQueue = []; state.activeNotice = null; state.showCongrats = false; render(); }
+  else if (act === "toggle-sidebar") { state.sidebarOpen = !state.sidebarOpen; render(); }
+  else if (act === "close-sidebar") { state.sidebarOpen = false; render(); }
+  else if (act === "delete-cert") { handleDeleteCertificate(el.dataset.id); }
+  else if (act === "dismiss-notice") { handleDismissNotice(false); }
+  else if (act === "dismiss-notice-all") { handleDismissNotice(true); }
+  else if (act === "dismiss-congrats") { state.showCongrats = false; render(); }
+});
+
+/* =========================================================================
+   INIT — no session is ever persisted, so every load starts at the
+   login screen with nothing to hydrate.
+   ========================================================================= */
+render();
+loadRegistrationSetting();
+</script>
+</body>
+</html>
