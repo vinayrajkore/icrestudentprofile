@@ -1,45 +1,78 @@
 ﻿/**
- * Code.gs  -  PORTAL TOKEN VALIDATION SNIPPET
- * =============================================
- * Add this to the TOP of your doPost() function in Code.gs.
- * This ensures that only requests from your portal (with the correct
- * PORTAL_TOKEN) are processed. Anyone who discovers the Apps Script URL
- * but does not know the token will receive an "Unauthorized" response.
+ * CODE_GS_TOKEN_SNIPPET.gs
+ * ========================
+ * COMPLETE doPost() REPLACEMENT for Code.gs
  *
- * SETUP:
- *   1. In Apps Script, go to: Project Settings > Script Properties
- *   2. Add property:  PORTAL_TOKEN  =  (same value as in your config.js)
- *   3. Redeploy the Web App after adding the property.
+ * PROBLEM SOLVED: Without a try/catch that ALWAYS returns via ContentService,
+ * any unhandled exception makes Apps Script return an HTML error page with
+ * NO CORS headers — the browser then shows "Could not reach the server".
  *
- * IMPORTANT: After setting up the token, regenerate your Apps Script
- * deployment URL (Deploy > Manage Deployments > New Deployment) and
- * update API_URL in your config.js with the new URL.
+ * HOW TO USE:
+ *   1. Open your Apps Script project (script.google.com)
+ *   2. Find your existing doPost() function
+ *   3. ADD the safe JSON parser at the top of doPost() as shown below
+ *   4. Make sure var data = parseBody(e) is the FIRST line inside doPost()
+ *   5. Save, then Deploy > Manage Deployments > click pencil > Version: New version > Deploy
  */
 
-// ---- Paste this at the TOP of your doPost() function ----
+// ============================================================
+// SAFE BODY PARSER — add this ABOVE your doPost() function
+// ============================================================
+function parseBody(e) {
+  try {
+    // New style: JSON body sent by the portal (e.postData.contents)
+    if (e.postData && e.postData.contents) {
+      return JSON.parse(e.postData.contents);
+    }
+  } catch (err) { /* fall through */ }
+  // Old style fallback: form-encoded parameters
+  return e.parameter || {};
+}
+
+function respond(data) {
+  return ContentService
+    .createTextOutput(JSON.stringify(data))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+// ============================================================
+// YOUR doPost() — replace your existing one with this pattern
+// ============================================================
 function doPost(e) {
   try {
-    var data = JSON.parse(e.postData.contents);
+    // 1. Parse body safely (supports both JSON and form-encoded)
+    var data = parseBody(e);
+    var action = data.action || "";
 
-    // --- TOKEN VALIDATION ---
+    // 2. Token validation — skip this block if you haven't set PORTAL_TOKEN yet
     var expectedToken = PropertiesService
       .getScriptProperties()
       .getProperty("PORTAL_TOKEN");
 
-    if (!expectedToken || data.portalToken !== expectedToken) {
-      return ContentService
-        .createTextOutput(JSON.stringify({ ok: false, error: "Unauthorized" }))
-        .setMimeType(ContentService.MimeType.JSON);
+    if (expectedToken && data.portalToken !== expectedToken) {
+      return respond({ ok: false, error: "Unauthorized" });
     }
-    // --- END TOKEN VALIDATION ---
+    // ---------------------------------------------------------
 
-    // ... rest of your existing doPost logic below ...
-    var action = data.action;
-    // switch (action) { ... }
+    // 3. Route to your existing action handlers
+    //    IMPORTANT: replace the switch cases below with YOUR existing code
+    //    Just change HOW you read the data — use data.fieldName
+    //    instead of e.parameter.fieldName
+    switch (action) {
+
+      // ---- EXAMPLE: replace with your real cases ----
+      // case "login":
+      //   return respond(handleLogin(data));
+      //
+      // case "getStudents":
+      //   return respond(handleGetStudents(data));
+
+      default:
+        return respond({ ok: false, error: "Unknown action: " + action });
+    }
 
   } catch (err) {
-    return ContentService
-      .createTextOutput(JSON.stringify({ ok: false, error: String(err) }))
-      .setMimeType(ContentService.MimeType.JSON);
+    // CRITICAL: always return via ContentService so CORS headers are sent
+    return respond({ ok: false, error: "Server error: " + String(err) });
   }
 }
