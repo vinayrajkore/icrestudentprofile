@@ -3,15 +3,23 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<!-- Security headers (supplement with HTTP headers on your server) -->
+<meta http-equiv="X-Content-Type-Options" content="nosniff" />
+<meta http-equiv="X-XSS-Protection" content="1; mode=block" />
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
 <meta name="author" content="Vinayraj Kore" />
 <meta name="description" content="Official student portal for the Department of Computer Engineering, Institute of Civil and Rural Engineering, Gargoti. Manage your profile, contact details and photo ID online." />
 <meta name="theme-color" content="#0F1B40" />
+<meta name="robots" content="noindex, nofollow" />
 <title>Student Portal · Computer Engineering · ICRE Gargoti</title>
 <link rel="icon" type="image/png" href="favicon.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Load deployment config BEFORE the app script -->
+<script src="config.js"></script>
+<script src="security.js"></script>
 <style>
 :root{
   --ink:        #101828;
@@ -280,40 +288,28 @@ console.log("%cICRE Gargoti \u00b7 Computer Engineering Student Portal", "font-w
 console.log("%cBuilt by Vinayraj Kore", "font-size:12px;color:#0EA5A4;");
 
 /* =========================================================================
-   CONFIG — API_URL points at your backend. Currently set to the Apps
-   Script Web App URL (ends /exec). If you migrate to Supabase (see
-   supabase/MIGRATION.md), replace this with your deployed Edge Function
-   URL instead — everything else on this page stays the same, since both
-   backends speak the same { action, ...payload } -> { ok, ... } protocol.
+   CONFIG — all sensitive values come from config.js (gitignored).
+   window.APP_CONFIG is set by config.js and validated by security.js.
+   DO NOT hardcode API URLs or Cloudinary credentials here.
    ========================================================================= */
-const API_URL = "https://script.google.com/macros/s/REDACTED_SEE_CONFIG_JS/exec";
-const LOGO = "logo.png"; // place a file named exactly logo.png next to this HTML file
-const ADMIN_URL = "admin.html"; // staff & admin panel — keep this file alongside admin.html
-
-const DEPT_NAME = "Computer Engineering";
-const CLASS_LABELS = { FY: "First Year", SY: "Second Year", TY: "Third Year" };
-const CLASS_ORDER = ["FY", "SY", "TY"];
-
-// Photo storage — student photos are uploaded straight from the browser to
-// Cloudinary (not through Apps Script/Sheets) and only the resulting image
-// URL is saved to the "photo" column. Unsigned upload preset means no
-// secret key is ever exposed in this file.
-const CLOUDINARY_CLOUD_NAME = "g6idhdc9";
-const CLOUDINARY_UPLOAD_PRESET = "i9q883xz";
-const CLOUDINARY_UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
-// Certificates can be a photo of the certificate OR a PDF, so uploads go
-// through the "auto" endpoint (same cloud/preset) which detects the
-// resource type instead of assuming image.
+const _CFG                    = window.APP_CONFIG;
+const API_URL                  = _CFG.API_URL;
+const LOGO                     = _CFG.LOGO               || "logo.png";
+const ADMIN_URL                = _CFG.ADMIN_URL           || "admin.html";
+const CLOUDINARY_CLOUD_NAME    = _CFG.CLOUDINARY_CLOUD_NAME;
+const CLOUDINARY_UPLOAD_PRESET = _CFG.CLOUDINARY_UPLOAD_PRESET;
+const CLOUDINARY_UPLOAD_URL    = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
 const CLOUDINARY_AUTO_UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/auto/upload`;
+
+const DEPT_NAME   = _CFG.DEPT_NAME   || "Computer Engineering";
+const CLASS_LABELS = { FY: "First Year", SY: "Second Year", TY: "Third Year" };
+const CLASS_ORDER  = ["FY", "SY", "TY"];
 
 // Prize / achievement status options offered on the certificate upload form.
 const CERTIFICATE_STATUSES = ["1st Prize", "2nd Prize", "3rd Prize", "Winner", "Runner-up", "Best Paper", "Participation", "Other"];
 
 // Which profile fields belong to which form on this page. Keep the keys in
 // sync with EDITABLE_STUDENT_FIELDS in Code.gs and FIELD_DEFS in admin.html
-// — the admin can turn any of these on/off from the Profile Field Controls
-// screen; when a field is off, students see it locked here and can't save
-// changes to it (the server enforces this too, this is just for the UI).
 const FIELD_SECTIONS = {
   profile: ["rollNumber", "phone", "dob", "gender", "bloodGroup", "sscMarks", "semester", "semMarks"],
   address: ["addr1", "addr2", "city", "state", "pincode"],
@@ -332,17 +328,23 @@ const BLOOD_GROUPS = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
    API — every read/write goes to the Google Sheet through Apps Script
    ========================================================================= */
 async function api(action, payload) {
-  if (!API_URL || API_URL.indexOf("PASTE_YOUR") === 0) {
-    return { ok: false, error: "The portal isn't connected to a Google Sheet yet. Set API_URL at the top of this file to your deployed Apps Script Web App URL." };
+  // Rate-limit all API calls to prevent abuse
+  if (window.RateLimit && !window.RateLimit.check(action)) {
+    return { ok: false, error: "Too many requests. Please wait a moment and try again." };
+  }
+  if (!API_URL || API_URL.indexOf("PASTE_") === 0 || API_URL.indexOf("YOUR_") === 0) {
+    return { ok: false, error: "The portal isn't connected to a Google Sheet yet. Set API_URL in config.js." };
   }
   try {
     const res = await fetch(API_URL, {
       method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(Object.assign({ action, portal: "student" }, payload || {})),
     });
+    if (!res.ok) throw new Error(`Server returned HTTP ${res.status}`);
     return await res.json();
   } catch (err) {
-    return { ok: false, error: "Could not reach the server. Check your connection and the API_URL setting." };
+    return { ok: false, error: "Could not reach the server. Check your connection." };
   }
 }
 

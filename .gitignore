@@ -1,0 +1,35 @@
+﻿# ============================================================
+# ICRE Gargoti Student Portal - .gitignore
+# ============================================================
+
+# --- SECRETS & LOCAL CONFIG (NEVER COMMIT) ---
+# config.js holds real API_URL and Cloudinary credentials.
+# Always use config.example.js as the template and fill in
+# config.js locally or in your deployment environment.
+config.js
+
+# --- OS / EDITOR NOISE ---
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.code-workspace
+
+# --- NODE (if you add a build step later) ---
+node_modules/
+npm-debug.log*
+yarn-error.log*
+dist/
+build/
+.env
+.env.local
+.env.production
+.env.development
+
+# --- LOGS ---
+*.log
+logs/
