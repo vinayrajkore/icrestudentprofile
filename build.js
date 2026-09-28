@@ -11,8 +11,7 @@
  *   CF_API_URL                  Your Apps Script /exec URL
  *   CF_CLOUDINARY_CLOUD_NAME    Your Cloudinary cloud name
  *   CF_CLOUDINARY_UPLOAD_PRESET Your unsigned upload preset name
- *   CF_PORTAL_TOKEN             Shared secret (same as Apps Script property)
- *
+ *  *
  * Optional:
  *   CF_DEPT_NAME                Default: "Computer Engineering"
  *   CF_COLLEGE_NAME             Default: "Institute of Civil and Rural Engineering"
@@ -42,7 +41,6 @@ const config = {
   API_URL:                  requireEnv("CF_API_URL"),
   CLOUDINARY_CLOUD_NAME:    requireEnv("CF_CLOUDINARY_CLOUD_NAME"),
   CLOUDINARY_UPLOAD_PRESET: requireEnv("CF_CLOUDINARY_UPLOAD_PRESET"),
-  PORTAL_TOKEN:             requireEnv("CF_PORTAL_TOKEN"),
   LOGO:                     "logo.png",
   ADMIN_URL:                "admin.html",
   STUDENT_PORTAL_URL:       "index.html",
@@ -74,3 +72,4 @@ console.log(`[build]   Cloud name:    ${config.CLOUDINARY_CLOUD_NAME}`);
 console.log(`[build]   Preset:        ${config.CLOUDINARY_UPLOAD_PRESET}`);
 console.log(`[build]   Token:         ${"*".repeat(config.PORTAL_TOKEN.length)}`);
 console.log("[build] Done. Deploy output directory: . (project root)");
+

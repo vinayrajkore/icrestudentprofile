@@ -296,7 +296,6 @@ const _CFG                    = window.APP_CONFIG;
 const API_URL                  = _CFG.API_URL;
 const LOGO                     = _CFG.LOGO               || "logo.png";
 const ADMIN_URL                = _CFG.ADMIN_URL           || "admin.html";
-const PORTAL_TOKEN             = _CFG.PORTAL_TOKEN        || "";
 const CLOUDINARY_CLOUD_NAME    = _CFG.CLOUDINARY_CLOUD_NAME;
 const CLOUDINARY_UPLOAD_PRESET = _CFG.CLOUDINARY_UPLOAD_PRESET;
 const CLOUDINARY_UPLOAD_URL    = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
@@ -339,8 +338,7 @@ async function api(action, payload) {
   try {
     const res = await fetch(API_URL, {
       method: "POST",
-      // No Content-Type header — avoids CORS preflight on Apps Script
-      body: JSON.stringify(Object.assign({ action, portal: "student", portalToken: PORTAL_TOKEN }, payload || {})),
+      body: JSON.stringify(Object.assign({ action, portal: "student" }, payload || {})),
     });
     if (!res.ok) throw new Error(`Server returned HTTP ${res.status}`);
     return await res.json();
