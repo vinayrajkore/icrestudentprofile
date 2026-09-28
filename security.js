@@ -1,4 +1,4 @@
-﻿/**
+/**
  * security.js  -  ICRE Gargoti Student Portal
  * ============================================
  * Runtime security utilities loaded by BOTH index.html and admin.html.
@@ -155,7 +155,8 @@
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com",
       "font-src 'self' https://fonts.gstatic.com",
       "img-src 'self' data: blob: https://res.cloudinary.com https://lh3.googleusercontent.com",
-      "connect-src 'self' https://script.google.com https://api.cloudinary.com",
+      // Apps Script redirects through script.googleusercontent.com — both domains needed
+      "connect-src 'self' https://script.google.com https://script.googleusercontent.com https://api.cloudinary.com",
       "frame-ancestors 'none'",
     ].join("; ");
     document.head.insertBefore(csp, document.head.firstChild);
