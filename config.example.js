@@ -26,8 +26,17 @@ window.APP_CONFIG = {
   ADMIN_URL:          "admin.html",
   STUDENT_PORTAL_URL: "index.html",
 
+  // PORTAL TOKEN - shared secret sent with every API request.
+  // Generate a long random string (e.g. 64 hex chars).
+  // Set the SAME value as a Script Property in Apps Script:
+  //   Project Settings > Script Properties > PORTAL_TOKEN = <your value>
+  // Code.gs then rejects any request that does not include this token.
+  PORTAL_TOKEN: "GENERATE_A_LONG_RANDOM_SECRET_HERE",
+
+
   // Department labels used in the UI
   DEPT_NAME:    "Computer Engineering",
   COLLEGE_NAME: "Institute of Civil and Rural Engineering",
   COLLEGE_CITY: "Gargoti",
 };
+

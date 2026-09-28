@@ -304,6 +304,7 @@ const _CFG                    = window.APP_CONFIG;
 const API_URL                  = _CFG.API_URL;
 const LOGO                     = _CFG.LOGO               || "logo.png";
 const STUDENT_PORTAL_URL       = _CFG.STUDENT_PORTAL_URL  || "index.html";
+const PORTAL_TOKEN             = _CFG.PORTAL_TOKEN        || "";
 const CLOUDINARY_CLOUD_NAME    = _CFG.CLOUDINARY_CLOUD_NAME;
 const CLOUDINARY_UPLOAD_PRESET = _CFG.CLOUDINARY_UPLOAD_PRESET;
 const CLOUDINARY_AUTO_UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/auto/upload`;
@@ -364,7 +365,8 @@ async function api(action, payload) {
     const res = await fetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(Object.assign({ action }, payload || {})),
+      // portalToken is validated by Code.gs — requests without it are rejected
+      body: JSON.stringify(Object.assign({ action, portalToken: PORTAL_TOKEN }, payload || {})),
     });
     if (!res.ok) throw new Error(`Server returned HTTP ${res.status}`);
     return await res.json();
