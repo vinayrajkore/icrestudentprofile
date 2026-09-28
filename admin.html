@@ -350,7 +350,9 @@ const BLOOD_GROUPS = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 const CERTIFICATE_STATUSES = ["1st Prize", "2nd Prize", "3rd Prize", "Winner", "Runner-up", "Best Paper", "Participation", "Other"];
 
 /* =========================================================================
-   API — every read/write goes to the Google Sheet through Apps Script
+   API — calls go through /api (Cloudflare Pages Function) which proxies
+   to Apps Script server-side, avoiding all CORS issues.
+   When running locally (file://) it falls back to calling Apps Script directly.
    ========================================================================= */
 async function api(action, payload) {
   // Rate-limit all API calls to prevent abuse
@@ -360,9 +362,13 @@ async function api(action, payload) {
   if (!API_URL || API_URL.indexOf("PASTE_") === 0 || API_URL.indexOf("YOUR_") === 0) {
     return { ok: false, error: "The panel isn't connected to a Google Sheet yet. Set API_URL in config.js." };
   }
+  // Use the /api proxy when served from a real origin (Cloudflare Pages)
+  // Fall back to direct Apps Script URL when opened as a local file
+  const endpoint = location.protocol === "file:" ? API_URL : "/api";
   try {
-    const res = await fetch(API_URL, {
+    const res = await fetch(endpoint, {
       method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(Object.assign({ action }, payload || {})),
     });
     if (!res.ok) throw new Error(`Server returned HTTP ${res.status}`);
