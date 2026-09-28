@@ -1,0 +1,13 @@
+﻿{
+  "name": "icre-student-portal",
+  "version": "1.0.0",
+  "description": "ICRE Gargoti Computer Engineering Student Portal",
+  "private": true,
+  "scripts": {
+    "build": "node build.js",
+    "dev": "node build.js && echo 'Open index.html in your browser'"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
