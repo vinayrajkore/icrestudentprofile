@@ -339,8 +339,7 @@ async function api(action, payload) {
   try {
     const res = await fetch(API_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      // portalToken is validated by Code.gs — requests without it are rejected
+      // No Content-Type header — avoids CORS preflight on Apps Script
       body: JSON.stringify(Object.assign({ action, portal: "student", portalToken: PORTAL_TOKEN }, payload || {})),
     });
     if (!res.ok) throw new Error(`Server returned HTTP ${res.status}`);
